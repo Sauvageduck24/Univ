@@ -1,0 +1,2 @@
+metodo,sharpe,rentabilidad %,volatilidad,capital_inicial,capital_final,beneficio
+"Penalización β=0.1, γ=10.0",0.10810979234477872,0.09828558240761867,0.009091264738015487,9000.0,11430.588929831056,2430.588929831056
