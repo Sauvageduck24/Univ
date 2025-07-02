@@ -8,6 +8,8 @@ import argparse
 import importlib
 from dateutil.relativedelta import relativedelta
 from typing import Tuple, Dict, List, Optional
+from sklearn.model_selection import train_test_split
+import time
 
 # Configuración inicial
 plt.style.use('ggplot')
@@ -31,12 +33,14 @@ class Config:
     DEFAULT_TEST_END = "2024-12-31"
     DEFAULT_INTERVAL = "1d"
     DEFAULT_CAPITAL = 9000.0
-    DEFAULT_N_TRIALS = 1000
+    DEFAULT_N_TRIALS = 100
     MIN_INVERSION = 600
-    MODE='REAL'
+    MODE='TRAIN'
     DEFAULT_WINDOW_TRAIN_YEARS = 5
-    DEFAULT_WINDOW_TEST_MONTHS = 3
     DEFAULT_WINDOW_STEP_MONTHS = 3
+    DEFAULT_METHOD='penalizacion_10.0_10.0'#'averiguate'
+    EARLY_STOPPING_PATIENCE = 10  # Número de trials sin mejora para parar
+    VALIDATION_SIZE = 0.2  # Tamaño del conjunto de validación
 
 # Crear carpeta de resultados si no existe
 os.makedirs("resultados", exist_ok=True)
@@ -66,14 +70,12 @@ def parse_args() -> argparse.Namespace:
                        help='Inversión mínima por activo')
     parser.add_argument('--window_train_years', type=int, default=Config.DEFAULT_WINDOW_TRAIN_YEARS, 
                        help='Años de train en cada rolling window')
-    parser.add_argument('--window_test_months', type=int, default=Config.DEFAULT_WINDOW_TEST_MONTHS, 
-                       help='Meses de test en cada rolling window')
     parser.add_argument('--window_step_months', type=int, default=Config.DEFAULT_WINDOW_STEP_MONTHS, 
                        help='Paso de la ventana rolling en meses')
-    parser.add_argument('--no_rolling', action='store_true', default=True,
-                       help='Desactiva el rolling window y usa todo el periodo de test')
     parser.add_argument('--modo', type=str, default=Config.MODE, choices=['TRAIN', 'REAL'],
                         help='Modo de operación: TRAIN (por defecto, con test/rolling) o REAL (entrena hasta hoy y muestra pesos para invertir)')
+    parser.add_argument('--metodo', type=str, default=Config.DEFAULT_METHOD,
+                       help="Método de optimización: 'proyeccion', 'penalizacion_BETA_GAMMA' (ej: penalizacion_10.0_0.0) o 'averiguate' para probar todos y elegir el mejor")
     
     return parser.parse_args()
 
@@ -111,12 +113,25 @@ def proyectar_pesos(w: np.ndarray, K: int) -> np.ndarray:
         
     return w_proj
 
-def calcular_metricas(pesos: np.ndarray, r_val: pd.DataFrame) -> Tuple[float, float, float, pd.Series]:
-    """Calcula métricas de rentabilidad, volatilidad y ratio Sharpe."""
-    ret_cartera = r_val @ pesos
+def calcular_metricas(pesos: np.ndarray, r_val: pd.DataFrame, tickers: list = None) -> Tuple[float, float, float, pd.Series]:
+    """Calcula métricas de rentabilidad, volatilidad y ratio Sharpe de forma robusta."""
+    if tickers is None:
+        tickers = r_val.columns.tolist()
+    # Filtrar activos con peso > 0
+    activos_validos = [t for t, p in zip(tickers, pesos) if p > 0]
+    pesos_validos = np.array([p for t, p in zip(tickers, pesos) if p > 0])
+    if len(activos_validos) == 0 or len(pesos_validos) == 0:
+        return float('nan'), float('nan'), float('nan'), pd.Series(dtype=float)
+    # Normalizar pesos
+    pesos_validos = pesos_validos / pesos_validos.sum()
+    # Filtrar r_val
+    r_val_filtrado = r_val[activos_validos]
+    if r_val_filtrado.shape[1] != len(pesos_validos):
+        return float('nan'), float('nan'), float('nan'), pd.Series(dtype=float)
+    ret_cartera = r_val_filtrado @ pesos_validos
     rent_media = ret_cartera.mean()
     volatilidad = ret_cartera.std()
-    sharpe = rent_media / (volatilidad + 1e-8)  # Evitar división por cero
+    sharpe = rent_media / (volatilidad + 1e-8)
     return rent_media, volatilidad, sharpe, ret_cartera
 
 def cargar_datos() -> Tuple[pd.Series, pd.DataFrame, pd.DataFrame, List[str]]:
@@ -135,50 +150,94 @@ def cargar_datos() -> Tuple[pd.Series, pd.DataFrame, pd.DataFrame, List[str]]:
         
     return mu_train, sigma_train, r_val, tickers
 
-# === FUNCIONES DE OPTIMIZACIÓN ===
-def objective_proyeccion(w: np.ndarray, mu: np.ndarray, sigma: np.ndarray) -> float:
-    """Función objetivo para el método de proyección."""
+# === FUNCIONES DE OPTIMIZACIÓN MEJORADAS ===
+def objective_proyeccion(w: np.ndarray, mu: np.ndarray, sigma: np.ndarray, 
+                        r_val: pd.DataFrame) -> float:
+    """Función objetivo para el método de proyección con validación."""
     diversificacion = 0.1 * np.sum(w > 0) / len(w)
     val = -w @ mu + 0.5 * w @ sigma @ w - diversificacion
-    return val if not (np.isnan(val) or np.isinf(val)) else 1e10
+    
+    # Calcular Sharpe en conjunto de validación
+    _, _, sharpe_val, _ = calcular_metricas(w, r_val)
+    
+    return sharpe_val if not (np.isnan(sharpe_val) or np.isinf(sharpe_val)) else -1e10
 
-def optuna_proyeccion(mu: np.ndarray, sigma: np.ndarray, K: int, 
-                     n_trials: int = 100) -> np.ndarray:
-    """Optimización por proyección usando Optuna."""
+def optuna_proyeccion(mu: np.ndarray, sigma: np.ndarray, r_train: pd.DataFrame, 
+                     r_val: pd.DataFrame, K: int, n_trials: int = 100) -> np.ndarray:
+    """Optimización por proyección usando Optuna con early stopping."""
     N = len(mu)
+    best_sharpe = -np.inf
+    no_improvement = 0
+    best_w = None
     
     def objective(trial):
+        nonlocal best_sharpe, no_improvement, best_w
+        
         w = np.array([trial.suggest_float(f'w_{i}', 0, 1) for i in range(N)])
         w = proyectar_pesos(w, K)
-        return objective_proyeccion(w, mu, sigma)
+        sharpe = objective_proyeccion(w, mu, sigma, r_val)
+        
+        # Early stopping
+        if sharpe > best_sharpe:
+            best_sharpe = sharpe
+            best_w = w.copy()
+            no_improvement = 0
+        else:
+            no_improvement += 1
+            
+        if no_improvement >= Config.EARLY_STOPPING_PATIENCE:
+            trial.study.stop()
+            
+        return sharpe
     
-    study = optuna.create_study(direction='minimize')
+    study = optuna.create_study(direction='maximize')
     study.optimize(objective, n_trials=n_trials, show_progress_bar=True)
     
-    best_w = np.array([study.best_params[f'w_{i}'] for i in range(N)])
-    return proyectar_pesos(best_w, K)
+    return best_w if best_w is not None else proyectar_pesos(np.ones(N)/N, K)
 
 def objective_penalizado(w: np.ndarray, mu: np.ndarray, sigma: np.ndarray, 
-                        K: int, beta: float, gamma: float) -> float:
-    """Función objetivo para el método penalizado."""
+                        r_val: pd.DataFrame, K: int, beta: float, gamma: float) -> float:
+    """Función objetivo para el método penalizado con validación."""
     penal = beta * max(0, np.count_nonzero(w) - K) + gamma * abs(np.sum(w) - 1)
     val = -w @ mu + 0.5 * w @ sigma @ w + penal
-    return val if not (np.isnan(val) or np.isinf(val)) else 1e10
+    
+    # Calcular Sharpe en conjunto de validación
+    _, _, sharpe_val, _ = calcular_metricas(w, r_val)
+    
+    return sharpe_val if not (np.isnan(sharpe_val) or np.isinf(sharpe_val)) else -1e10
 
-def optuna_penalizado(mu: np.ndarray, sigma: np.ndarray, K: int, 
-                      beta: float, gamma: float, n_trials: int = 100) -> np.ndarray:
-    """Optimización penalizada usando Optuna."""
+def optuna_penalizado(mu: np.ndarray, sigma: np.ndarray, r_train: pd.DataFrame,
+                     r_val: pd.DataFrame, K: int, beta: float, gamma: float, 
+                     n_trials: int = 100) -> np.ndarray:
+    """Optimización penalizada usando Optuna con early stopping."""
     N = len(mu)
+    best_sharpe = -np.inf
+    no_improvement = 0
+    best_w = None
     
     def objective(trial):
+        nonlocal best_sharpe, no_improvement, best_w
+        
         w = np.array([trial.suggest_float(f'w_{i}', 0, 1) for i in range(N)])
-        return objective_penalizado(w, mu, sigma, K, beta, gamma)
+        sharpe = objective_penalizado(w, mu, sigma, r_val, K, beta, gamma)
+        
+        # Early stopping
+        if sharpe > best_sharpe:
+            best_sharpe = sharpe
+            best_w = w.copy()
+            no_improvement = 0
+        else:
+            no_improvement += 1
+            
+        if no_improvement >= Config.EARLY_STOPPING_PATIENCE:
+            trial.study.stop()
+            
+        return sharpe
     
-    study = optuna.create_study(direction='minimize')
+    study = optuna.create_study(direction='maximize')
     study.optimize(objective, n_trials=n_trials, show_progress_bar=True)
     
-    best_w = np.array([study.best_params[f'w_{i}'] for i in range(N)])
-    return proyectar_pesos(best_w, K)
+    return proyectar_pesos(best_w, K) if best_w is not None else proyectar_pesos(np.ones(N)/N, K)
 
 # === FUNCIONES DE AJUSTE Y VISUALIZACIÓN ===
 def ajustar_pesos_min_inversion(pesos: np.ndarray, tickers: List[str], 
@@ -213,8 +272,10 @@ def mostrar_pesos(pesos: np.ndarray, tickers: List[str],
                  capital_inicial: float = None) -> None:
     """Muestra los pesos óptimos en formato de tabla."""
     df = pd.DataFrame({"Ticker": tickers, "Peso": pesos})
-    df = df[df["Peso"] > 0.001].sort_values("Peso", ascending=False)
-    
+    df = df[df["Peso"] > 0.0001].sort_values("Peso", ascending=False)
+    if df.empty:
+        print("\nNo hay activos seleccionados con peso significativo (>0.0001). Prueba con menos restricción de inversión mínima o más capital.")
+        return
     if capital_inicial is not None:
         df["Inversión"] = df["Peso"] * capital_inicial
         print("\nPesos óptimos recomendados para cada activo:")
@@ -222,7 +283,6 @@ def mostrar_pesos(pesos: np.ndarray, tickers: List[str],
     else:
         print("\nPesos óptimos recomendados para cada activo:")
         print(df[["Ticker", "Peso"]].to_string(index=False))
-    
     df.to_csv("resultados/pesos_optimos.csv", index=False)
 
 def plot_evolution(capital_series: pd.Series, title: str, filename: str) -> None:
@@ -238,100 +298,104 @@ def plot_evolution(capital_series: pd.Series, title: str, filename: str) -> None
     plt.savefig(f"resultados/{filename}.png")
     plt.show()
 
-# === BACKTEST ROLLING WINDOW ===
-def rolling_window_backtest(precios: pd.DataFrame, mu_full: pd.Series, sigma_full: pd.DataFrame, 
-                           r_full: pd.DataFrame, tickers: List[str], window_train_years: int, 
-                           window_test_months: int, window_step_months: int, capital_inicial: float, 
-                           n_trials: int, min_inversion: float, test_start: str, test_end: str) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
-    """Realiza backtesting con ventanas móviles."""
-    fechas = precios.index
-    start_test = pd.to_datetime(test_start)
-    end_test = pd.to_datetime(test_end)
-    current_test_start = start_test
+# === BACKTEST ROLLING WINDOW SOLO EN TRAIN ===
+def rolling_window_train(precios_train: pd.DataFrame, tickers: List[str], 
+                        window_train_years: int, window_step_months: int, 
+                        capital_inicial: float, n_trials: int, min_inversion: float) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    """Realiza rolling window solo en datos de entrenamiento para validación."""
+    fechas = precios_train.index
+    end_date = precios_train.index[-1]
+    current_start = precios_train.index[0]
     capital = capital_inicial
     capital_evol = []
     fechas_evol = []
     pesos_ventanas = []
     metricas_ventanas = []
-    while current_test_start < end_test:
-        current_test_end = current_test_start + relativedelta(months=window_test_months)
-        
-        # Definir ventanas de train y test
-        train_start = current_test_start - relativedelta(years=window_train_years)
-        train_end = current_test_start - pd.Timedelta(days=1)
-        
-        precios_train = precios[(precios.index >= train_start) & (precios.index <= train_end)]
-        precios_test = precios[(precios.index >= current_test_start) & (precios.index < current_test_end)]
-        
-        if len(precios_train) < 10 or len(precios_test) < 2:
-            current_test_start += relativedelta(months=window_step_months)
+    # Calcular el número total de ventanas aproximado
+    total_ventanas = 0
+    temp_start = current_start
+    while temp_start < end_date:
+        temp_end = temp_start + relativedelta(years=window_train_years)
+        if temp_end > end_date:
+            break
+        total_ventanas += 1
+        temp_start += relativedelta(months=window_step_months)
+    ventana_actual = 0
+    while current_start < end_date:
+        current_end = current_start + relativedelta(years=window_train_years)
+        if current_end > end_date:
+            break
+        ventana_actual += 1
+        print(f"Ventana {ventana_actual}/{total_ventanas}")
+        precios_window = precios_train[(precios_train.index >= current_start) & 
+                                      (precios_train.index <= current_end)]
+        if len(precios_window) < 10:
+            current_start += relativedelta(months=window_step_months)
             continue
-            
-        r_train = precios_train.pct_change().dropna()
-        r_test = precios_test.pct_change().dropna()
+        split_idx = int(len(precios_window) * 0.8)
+        precios_train_window = precios_window.iloc[:split_idx]
+        precios_val_window = precios_window.iloc[split_idx:]
+        r_train = precios_train_window.pct_change(fill_method=None).dropna()
+        r_val = precios_val_window.pct_change(fill_method=None).dropna()
+        # Chequeo de tamaño suficiente para evitar warnings
+        if r_train.shape[0] < 2 or r_train.shape[1] == 0 or r_val.shape[0] < 2 or r_val.shape[1] == 0:
+            current_start += relativedelta(months=window_step_months)
+            continue
         mu_train = r_train.mean()
         sigma_train = r_train.cov()
-        
-        # Optimización para la ventana actual
         N = len(mu_train)
         K = min(10, N)
-        
-        # Buscar mejor estrategia en train
         mejor_sharpe = -np.inf
         mejor_pesos = None
         mejor_label = None
-        
-        # Probar diferentes combinaciones de parámetros
         for beta in [0.1, 1.0, 10.0]:
-            for gamma in [0.0, 10.0]:
-                pesos_pen = optuna_penalizado(mu_train.values, sigma_train.values, K, beta, gamma, n_trials)
-                ret, vol, sharpe, _ = calcular_metricas(pesos_pen, r_train)
-                
-                if sharpe > mejor_sharpe:
-                    mejor_sharpe = sharpe
+            for gamma in [0.0, 1.0, 10.0]:
+                pesos_pen = optuna_penalizado(mu_train.values, sigma_train.values, 
+                                            r_train, r_val, K, beta, gamma, n_trials)
+                # Chequeo de pesos válidos
+                if pesos_pen is None or np.allclose(pesos_pen, 0):
+                    continue
+                _, _, sharpe_val, _ = calcular_metricas(pesos_pen, r_val, mu_train.index.tolist())
+                if np.isnan(sharpe_val):
+                    continue
+                if sharpe_val > mejor_sharpe:
+                    mejor_sharpe = sharpe_val
                     mejor_pesos = pesos_pen
                     mejor_label = f"Penalización β={beta}, γ={gamma}"
-        
-        # Ajuste de pesos mínimos
-        mejor_pesos_ajustados, _ = ajustar_pesos_min_inversion(mejor_pesos, tickers, capital, min_inversion)
-        
-        # Aplicar en test
-        ret_test, vol_test, sharpe_test, serie_test = calcular_metricas(mejor_pesos_ajustados, r_test)
-        
-        # Evolución del capital
-        capital_serie = (1 + serie_test).cumprod() * capital
+        # Si no hay pesos válidos, saltar ventana
+        if mejor_pesos is None or np.allclose(mejor_pesos, 0):
+            current_start += relativedelta(months=window_step_months)
+            continue
+        # Aplicar en validation
+        ret_val, vol_val, sharpe_val, serie_val = calcular_metricas(mejor_pesos, r_val, mu_train.index.tolist())
+        if np.isnan(sharpe_val):
+            current_start += relativedelta(months=window_step_months)
+            continue
+        capital_serie = (1 + serie_val).cumprod() * capital
         capital = capital_serie.iloc[-1]
         capital_evol.extend(capital_serie.tolist())
         fechas_evol.extend(capital_serie.index.tolist())
-        
-        # Guardar resultados de la ventana
-        pesos_ventanas.append(mejor_pesos_ajustados)
+        pesos_ventanas.append(mejor_pesos)
         metricas_ventanas.append({
-            "train_start": train_start.strftime('%Y-%m-%d'),
-            "train_end": train_end.strftime('%Y-%m-%d'),
-            "test_start": current_test_start.strftime('%Y-%m-%d'),
-            "test_end": (current_test_end-pd.Timedelta(days=1)).strftime('%Y-%m-%d'),
-            "sharpe_test": sharpe_test,
-            "rentabilidad_test": ret_test*100,
-            "volatilidad_test": vol_test,
+            "train_start": current_start.strftime('%Y-%m-%d'),
+            "train_end": precios_train_window.index[-1].strftime('%Y-%m-%d'),
+            "val_start": precios_val_window.index[0].strftime('%Y-%m-%d'),
+            "val_end": precios_val_window.index[-1].strftime('%Y-%m-%d'),
+            "sharpe_val": sharpe_val,
+            "rentabilidad_val": ret_val*100,
+            "volatilidad_val": vol_val,
             "capital_final": capital,
             "mejor_label": mejor_label
         })
-        
-        current_test_start += relativedelta(months=window_step_months)
-    
-    # Guardar resultados
+        current_start += relativedelta(months=window_step_months)
     df_evol = pd.DataFrame({"fecha": fechas_evol, "capital": capital_evol})
-    df_evol.to_csv("resultados/evolucion_capital_rolling.csv", index=False)
-    
-    df_pesos = pd.DataFrame(pesos_ventanas, columns=tickers)
-    df_pesos.to_csv("resultados/pesos_ventanas_rolling.csv", index=False)
-    
+    df_evol.to_csv("resultados/evolucion_capital_rolling_train.csv", index=False)
+    df_pesos = pd.DataFrame(pesos_ventanas)
+    df_pesos.to_csv("resultados/pesos_ventanas_rolling_train.csv", index=False)
     df_metricas = pd.DataFrame(metricas_ventanas)
-    df_metricas.to_csv("resultados/metricas_ventanas_rolling.csv", index=False)
-    
-    print("\nRolling window finalizado. Resultados guardados en 'resultados/'.")
-    return df_evol, df_pesos, df_metricas
+    df_metricas.to_csv("resultados/metricas_ventanas_rolling_train.csv", index=False)
+    print("\nRolling window en train finalizado. Resultados guardados en 'resultados/'.")
+    return df_evol, df_metricas
 
 # === FUNCIÓN PRINCIPAL ===
 def main():
@@ -348,8 +412,8 @@ def main():
     n_trials = args.n_trials
     min_inversion = args.min_inversion
     window_train_years = args.window_train_years
-    window_test_months = args.window_test_months
     window_step_months = args.window_step_months
+    metodo = args.metodo.lower()
     
     print("\n" + "="*50)
     print("CONFIGURACIÓN DEL ANÁLISIS")
@@ -362,11 +426,9 @@ def main():
     print(f"Inversión mínima por activo: {min_inversion} €")
     print(f"Número de trials Optuna: {n_trials}")
     
-    if not args.no_rolling:
-        print(f"\nRolling Window Config:")
-        print(f"  - Train: {window_train_years} años")
-        print(f"  - Test: {window_test_months} meses")
-        print(f"  - Step: {window_step_months} meses")
+    print(f"\nRolling Window Config (solo en train):")
+    print(f"  - Train window: {window_train_years} años")
+    print(f"  - Step: {window_step_months} meses")
     
     if args.modo.upper() == 'REAL':
         print("\n=== MODO REAL: Entrenando con todos los datos hasta hoy ===")
@@ -377,85 +439,157 @@ def main():
         mu_train, sigma_train, r_val, tickers = cargar_datos()
         N = len(mu_train)
         K = min(10, N)
+        # Dividir en train y validation
+        precios = pd.read_csv("data/precios_test.csv", index_col=0, parse_dates=True)
+        r_full = precios.pct_change(fill_method=None).dropna()
+        r_train, r_val_split = train_test_split(r_full, test_size=Config.VALIDATION_SIZE, shuffle=False)
         # Optimización y ajuste igual que antes
         mejor_sharpe = -np.inf
         mejor_pesos = None
         mejor_label = None
         for beta in [0.1, 1.0, 10.0]:
-            for gamma in [0.0, 10.0]:
-                pesos_pen = optuna_penalizado(mu_train.values, sigma_train.values, K, beta, gamma, n_trials)
-                ret, vol, sharpe, _ = calcular_metricas(pesos_pen, r_val)
+            for gamma in [0.0, 1.0, 10.0]:
+                pesos_pen = optuna_penalizado(mu_train.values, sigma_train.values, 
+                                            r_train, r_val_split, K, beta, gamma, n_trials)
+                ret, vol, sharpe, _ = calcular_metricas(pesos_pen, r_val_split)
                 if sharpe > mejor_sharpe:
                     mejor_sharpe = sharpe
                     mejor_pesos = pesos_pen
                     mejor_label = f"Penalización β={beta}, γ={gamma}"
         # Ajuste de pesos mínimos
-        mejor_pesos_ajustados, pesos_ajustados_dict = ajustar_pesos_min_inversion(mejor_pesos, tickers, capital_inicial, args.min_inversion)
+        mejor_pesos_ajustados, pesos_ajustados_dict = ajustar_pesos_min_inversion(
+            mejor_pesos, tickers, capital_inicial, args.min_inversion
+        )
         # Mostrar y guardar pesos
-        print("\nPesos óptimos para invertir hoy:")
-        for ticker, peso in sorted(pesos_ajustados_dict.items(), key=lambda x: x[1], reverse=True):
-            print(f"{ticker}: {peso:.4f} → {peso * capital_inicial:.2f} €")
-        pd.DataFrame({"Ticker": tickers, "Peso": mejor_pesos_ajustados}).to_csv("resultados/pesos_optimos_real.csv", index=False)
         print(f"\nCapital inicial: {capital_inicial:.2f} €")
         print(f"Archivo de pesos guardado en 'resultados/pesos_optimos_real.csv'")
+        # Rolling window en modo REAL
+        print("\nValidación rolling window en modo REAL...")
+        precios_train = pd.read_csv("data/precios_train.csv", index_col=0, parse_dates=True)
+        df_evol_train, df_metricas_train = rolling_window_train(
+            precios_train, tickers, window_train_years, window_step_months, 
+            capital_inicial, n_trials, min_inversion
+        )
+        avg_sharpe = df_metricas_train['sharpe_val'].mean()
+        print(f"\nSharpe promedio en validación (rolling, modo REAL): {avg_sharpe:.2f}")
+        print("\nPesos óptimos para invertir hoy:")
+        mostrar_pesos(mejor_pesos_ajustados, tickers, capital_inicial)
+        if np.allclose(mejor_pesos_ajustados, 0):
+            print("\nNo hay activos seleccionados tras el ajuste de inversión mínima. Prueba con menos restricción o más capital.")
+        pd.DataFrame({"Ticker": tickers, "Peso": mejor_pesos_ajustados}).to_csv(
+            "resultados/pesos_optimos_real.csv", index=False
+        )
         return
     
+    fecha_inicio=time.time()
+
     # Descargar datos
     download_data(symbols, train_start, train_end, test_start, test_end, interval)
     
     # Cargar datos procesados
-    mu_train, sigma_train, r_val, tickers = cargar_datos()
+    mu_train, sigma_train, r_test, tickers = cargar_datos()
     N = len(mu_train)
     K = min(10, N)
+    
+    # Dividir train en train y validation
+    precios_train = pd.read_csv("data/precios_train.csv", index_col=0, parse_dates=True)
+    r_full_train = precios_train.pct_change(fill_method=None).dropna()
+    r_train, r_val = train_test_split(r_full_train, test_size=Config.VALIDATION_SIZE, shuffle=False)
     
     # === OPTIMIZACIÓN Y EVALUACIÓN ===
     print("\n" + "="*50)
     print("OPTIMIZANDO CARTERA")
     print("="*50)
     
+    # Primero validación con rolling window en train
+    print("\nRealizando validación con rolling window en datos de entrenamiento...")
+    df_evol_train, df_metricas_train = rolling_window_train(
+        precios_train, tickers, window_train_years, window_step_months, 
+        capital_inicial, n_trials, min_inversion
+    )
+    
+    # Analizar métricas de las ventanas para seleccionar mejores parámetros
+    avg_sharpe = df_metricas_train['sharpe_val'].mean()
+    print(f"\nSharpe promedio en validación (rolling): {avg_sharpe:.2f}")
+    
+    # Optimización final con todos los datos de entrenamiento
+    print("\nOptimizando con todos los datos de entrenamiento...")
+    mu_final = r_full_train.mean()
+    sigma_final = r_full_train.cov()
+    
     resultados = []
-    series_evolucion = {}
     mejor_sharpe = -np.inf
     mejor_pesos = None
     mejor_label = None
-    mejor_serie = None
     
-    # Método de Proyección
-    print("\nOptimizando con método de proyección...")
-    pesos_proj = optuna_proyeccion(mu_train.values, sigma_train.values, K, n_trials)
-    rent_p, vol_p, sharpe_p, serie_proj = calcular_metricas(pesos_proj, r_val)
-    resultados.append(["proyeccion", None, None, rent_p*100, vol_p, sharpe_p])
-    series_evolucion["Proyección"] = serie_proj
-    
-    if sharpe_p > mejor_sharpe:
+    if metodo == 'proyeccion':
+        print("\nOptimizando con método de proyección...")
+        pesos_proj = optuna_proyeccion(mu_final.values, sigma_final.values, 
+                                      r_train, r_val, K, n_trials)
+        rent_p, vol_p, sharpe_p, serie_proj = calcular_metricas(pesos_proj, r_test)
+        resultados.append(["proyeccion", None, None, rent_p*100, vol_p, sharpe_p])
         mejor_sharpe = sharpe_p
         mejor_pesos = pesos_proj
         mejor_label = "Proyección externa"
-        mejor_serie = serie_proj
-    
-    # Método Penalizado
-    print("\nOptimizando con método penalizado...")
-    for beta in [0.1, 1.0, 10.0]:
-        for gamma in [0.0, 10.0]:
-            print(f"  - Probando beta={beta}, gamma={gamma}")
-            pesos_pen = optuna_penalizado(mu_train.values, sigma_train.values, K, beta, gamma, n_trials)
-            rent, vol, sharpe, serie = calcular_metricas(pesos_pen, r_val)
-            label = f"Penalización β={beta}, γ={gamma}"
-            resultados.append(["penalizacion", beta, gamma, rent*100, vol, sharpe])
-            series_evolucion[label] = serie
-            
-            if sharpe > mejor_sharpe:
-                mejor_sharpe = sharpe
-                mejor_pesos = pesos_pen
-                mejor_label = label
-                mejor_serie = serie
+    elif metodo.startswith('penalizacion_'):
+        try:
+            _, beta_str, gamma_str = metodo.split('_')
+            beta = float(beta_str)
+            gamma = float(gamma_str)
+        except Exception as e:
+            print("Error en el formato de --metodo para penalización. Usa: penalizacion_BETA_GAMMA, ej: penalizacion_10.0_0.0")
+            return
+        print(f"\nOptimizando con método penalizado (beta={beta}, gamma={gamma})...")
+        pesos_pen = optuna_penalizado(mu_final.values, sigma_final.values, 
+                                     r_train, r_val, K, beta, gamma, n_trials)
+        rent, vol, sharpe, serie = calcular_metricas(pesos_pen, r_test)
+        label = f"Penalización β={beta}, γ={gamma}"
+        resultados.append(["penalizacion", beta, gamma, rent*100, vol, sharpe])
+        mejor_sharpe = sharpe
+        mejor_pesos = pesos_pen
+        mejor_label = label
+    elif metodo == 'averiguate':
+        print("\nProbando todos los métodos para averiguar el mejor...")
+        # Proyección
+        pesos_proj = optuna_proyeccion(mu_final.values, sigma_final.values, 
+                                      r_train, r_val, K, n_trials)
+        rent_p, vol_p, sharpe_p, serie_proj = calcular_metricas(pesos_proj, r_test)
+        resultados.append(["proyeccion", None, None, rent_p*100, vol_p, sharpe_p])
+        if sharpe_p > mejor_sharpe:
+            mejor_sharpe = sharpe_p
+            mejor_pesos = pesos_proj
+            mejor_label = "Proyección externa"
+        # Penalizaciones
+        for beta in [0.1, 1.0, 10.0]:
+            for gamma in [0.0, 1.0, 10.0]:
+                print(f"  - Probando penalización beta={beta}, gamma={gamma}")
+                pesos_pen = optuna_penalizado(mu_final.values, sigma_final.values, 
+                                             r_train, r_val, K, beta, gamma, n_trials)
+                rent, vol, sharpe, serie = calcular_metricas(pesos_pen, r_test)
+                label = f"Penalización β={beta}, γ={gamma}"
+                resultados.append(["penalizacion", beta, gamma, rent*100, vol, sharpe])
+                if sharpe > mejor_sharpe:
+                    mejor_sharpe = sharpe
+                    mejor_pesos = pesos_pen
+                    mejor_label = label
+        print(f"\nEl mejor método es: {mejor_label} (Sharpe={mejor_sharpe:.3f})")
+    else:
+        print("\nMétodo no reconocido. Usando penalización por defecto (beta=10, gamma=0)")
+        pesos_pen = optuna_penalizado(mu_final.values, sigma_final.values, 
+                                    r_train, r_val, K, 10.0, 0.0, n_trials)
+        rent, vol, sharpe, serie = calcular_metricas(pesos_pen, r_test)
+        label = "Penalización β=10.0, γ=0.0"
+        resultados.append(["penalizacion", 10.0, 0.0, rent*100, vol, sharpe])
+        mejor_sharpe = sharpe
+        mejor_pesos = pesos_pen
+        mejor_label = label
     
     # Resultados
     df_resultados = pd.DataFrame(resultados, 
-                                columns=["metodo", "beta", "gamma", "rentabilidad %", "volatilidad", "sharpe"])
-    print("\nResumen de resultados de validación:")
+                               columns=["metodo", "beta", "gamma", "rentabilidad %", "volatilidad", "sharpe"])
+    print("\nResumen de resultados en test:")
     print(df_resultados)
-    df_resultados.to_csv("resultados/resultados_validacion.csv", index=False)
+    df_resultados.to_csv("resultados/resultados_test.csv", index=False)
     
     # Mostrar y guardar mejores pesos
     mostrar_pesos(mejor_pesos, tickers, capital_inicial)
@@ -475,7 +609,7 @@ def main():
     )
     
     # Calcular métricas finales con pesos ajustados
-    rent_ajust, vol_ajust, sharpe_ajust, serie_ajust = calcular_metricas(mejor_pesos_ajustados, r_val)
+    rent_ajust, vol_ajust, sharpe_ajust, serie_ajust = calcular_metricas(mejor_pesos_ajustados, r_test)
     capital_final = (1 + serie_ajust).cumprod().iloc[-1] * capital_inicial
     
     # Guardar métricas finales
@@ -491,8 +625,8 @@ def main():
     df_metricas_final.to_csv("resultados/metricas_finales_ajustadas.csv", index=False)
     
     # Gráfico de evolución del capital
-    capital_series = (1 + mejor_serie).cumprod() * capital_inicial
-    plot_evolution(capital_series, mejor_label, "evolucion_capital_mejor")
+    capital_series = (1 + serie_ajust).cumprod() * capital_inicial
+    plot_evolution(capital_series, mejor_label, "evolucion_capital_test")
     
     # Resumen final
     print("\n" + "="*50)
@@ -505,25 +639,7 @@ def main():
     print(f"Rentabilidad: {(capital_final - capital_inicial) / capital_inicial * 100:.2f}%")
     print(f"Ratio Sharpe: {sharpe_ajust:.2f}")
     print(f"Volatilidad: {vol_ajust:.4f}")
-    
-    # Rolling Window si está activado
-    if not args.no_rolling:
-        print("\n" + "="*50)
-        print("INICIANDO ROLLING WINDOW BACKTEST")
-        print("="*50)
-        
-        precios = pd.read_csv("data/precios_test.csv", index_col=0, parse_dates=True)
-        df_evol, df_pesos, df_metricas = rolling_window_backtest(
-            precios, mu_train, sigma_train, r_val, tickers, 
-            window_train_years, window_test_months, window_step_months, 
-            capital_inicial, n_trials, min_inversion,
-            test_start, test_end
-        )
-        
-        # Gráfico de evolución del capital en rolling window
-        plot_evolution(df_evol.set_index("fecha")["capital"], 
-                      "Rolling Window Backtest", 
-                      "evolucion_capital_rolling")
 
+    print(f"\nTiempo de ejecución: {time.time() - fecha_inicio:.2f} segundos")
 if __name__ == "__main__":
     main()
