@@ -13,6 +13,7 @@ Este repositorio recopila prácticas, proyectos y ejemplos desarrollados durante
 - `p5/` – **Redes de Hopfield: Problema de las N torres**
 - `p6/` – **Optimización evolutiva: Carteras de inversión con CMA-ES**
 - `ia/` – **Ejemplos de Inteligencia Artificial supervisada y no supervisada (PyTorch y scikit-learn)**
+- `mineria_de_datos/` – **Minería de Datos: Análisis de un Barómetro Social**
 - `modelos_lineales.ipynb` – Ejemplo de modelos lineales y logísticos en Python
 
 ---
@@ -36,6 +37,22 @@ Aplicación de redes neuronales de Hopfield para resolver el problema de colocar
 
 ### `p6/` – Optimización evolutiva: Carteras de inversión con CMA-ES
 Optimización de carteras bajo restricciones de presupuesto y cardinalidad usando el algoritmo evolutivo CMA-ES. Se exploran estrategias de proyección y penalización para cumplir restricciones y se analizan los resultados obtenidos.
+
+### `mineria_de_datos/` – Minería de Datos: Análisis de un Barómetro Social
+Proyecto individual de la asignatura Minería de Datos que consiste en un análisis completo de un dataset real (barómetro social), recorriendo todas las fases del proceso de análisis de datos. El objetivo no es construir un modelo por sí mismo, sino **responder preguntas con datos**.
+
+El proyecto se divide en 4 entregas (25% cada una):
+
+- **Entrega 1 – Ingesta, EDA y definición del problema:** Descarga e ingesta del barómetro, comprensión del dataset (registros, variables, tipos, codificación), análisis exploratorio (valores faltantes, distribuciones, outliers, relaciones) y formulación de 6 preguntas de negocio (2 BI, 2 BA, 2 DS).
+- **Entrega 2 – Preparación de datos:** Limpieza de datos, tratamiento de missing y NS/NC, recodificación y transformación de variables (discretización, creación, selección) y construcción del dataset analítico final.
+- **Entrega 3 – Modelado y validación:** Selección de variables y modelo, entrenamiento, validación obligatoria (train/test o validación cruzada) con métricas (accuracy, precisión, recall, matriz de confusión) e interpretación de variables relevantes y patrones detectados.
+- **Entrega 4 – Resultados y conclusiones:** Respuestas a las preguntas BI, BA y DS, interpretación de resultados, conclusiones finales y limitaciones del análisis.
+
+El informe final sigue la estructura: Introducción → Descripción del dataset → Pipeline de datos → Análisis BI/BA/DS → Conclusiones (15–25 páginas).
+
+Guía completa del proyecto disponible en `mineria_de_datos/guia_proyecto_final.pdf`.
+
+---
 
 ### `modelos_lineales.ipynb`
 Ejemplo de implementación de modelos de regresión lineal y logística desde cero en Python, útil para entender los fundamentos del aprendizaje supervisado.
