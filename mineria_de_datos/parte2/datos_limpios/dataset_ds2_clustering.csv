@@ -1,0 +1,368 @@
+P801_num,P802_num,P803_num,P804_num,P805_num,P806_num,P807_num,P18,P20,P21,P24_num
+1.0,3.0,6.0,7.0,3.0,4.0,6.0,Mujer,59,"Menos de estudios primarios, sabe leer (menos de 6 años de e",6.0
+1.0,2.0,7.0,7.0,1.0,4.0,7.0,Hombre,42,"Menos de estudios primarios, sabe leer (menos de 6 años de e",4.0
+2.0,7.0,7.0,7.0,4.0,3.0,7.0,Hombre,63,Estudios de grado medio,4.0
+1.0,1.0,2.0,1.0,5.0,5.0,7.0,Hombre,22,Estudios primarios completos. cultural general,3.0
+3.0,5.0,5.0,3.0,7.0,6.0,7.0,Mujer,67,Estudios primarios completos. cultural general,9.0
+1.0,1.0,2.0,2.0,1.0,1.0,2.0,Hombre,19,Universitario o técnicos de grado superior,7.0
+1.0,4.0,4.0,5.0,3.0,2.5,4.0,Hombre,68,"Menos de estudios primarios, sabe leer (menos de 6 años de e",3.0
+1.0,3.0,3.0,4.0,6.0,5.0,1.0,Hombre,23,Universitario o técnicos de grado superior,5.0
+6.0,5.0,7.0,1.0,1.0,1.0,1.0,Mujer,35,Bachiller elemental,5.0
+1.0,5.0,6.0,6.0,3.0,3.0,3.0,Mujer,22,Universitario o técnicos de grado superior,9.0
+1.0,4.0,7.0,6.0,6.0,2.0,7.0,Hombre,40,Estudios de formación profesional,5.0
+1.0,2.0,5.0,4.0,3.0,2.0,5.0,Mujer,22,Estudios de formación profesional,6.0
+2.0,5.0,5.0,4.0,3.0,2.5,3.0,Hombre,32,Universitario o técnicos de grado superior,5.0
+4.0,6.0,6.0,5.0,6.0,5.0,5.0,Hombre,66,Estudios primarios completos. cultural general,4.0
+3.0,5.0,6.0,6.0,7.0,2.5,4.0,Mujer,29,Universitario o técnicos de grado superior,7.0
+3.0,5.0,7.0,6.0,7.0,3.0,3.0,Mujer,52,Bachiller superior,6.0
+5.0,6.0,7.0,6.0,5.0,2.5,4.0,Mujer,23,Bachiller superior,8.0
+2.0,3.0,4.0,4.0,6.0,2.0,2.0,Hombre,61,Bachiller elemental,5.0
+1.0,6.0,6.0,6.0,6.0,6.0,4.0,Hombre,22,Universitario o técnicos de grado superior,9.0
+5.0,1.0,2.0,3.0,4.0,5.0,7.0,Hombre,19,Universitario o técnicos de grado superior,9.0
+4.0,2.0,2.0,3.0,5.0,2.5,5.0,Mujer,48,Bachiller superior,5.0
+4.0,3.0,4.0,2.0,3.0,2.5,3.0,Hombre,25,Universitario o técnicos de grado superior,9.0
+4.0,7.0,7.0,4.0,4.0,2.0,3.0,Mujer,42,"Menos de estudios primarios, no sabe leer",4.0
+1.0,3.0,7.0,2.0,6.0,4.0,6.0,Mujer,28,Bachiller superior,6.0
+5.0,6.0,5.0,5.0,4.0,2.5,4.0,Hombre,20,Universitario o técnicos de grado superior,7.0
+1.0,1.0,5.0,5.0,1.0,1.0,7.0,Hombre,48,Bachiller elemental,5.0
+1.0,1.0,1.0,1.0,1.0,2.5,1.0,Hombre,20,Bachiller elemental,5.0
+5.0,6.0,5.0,2.0,3.0,2.0,1.0,Mujer,66,Universitario o técnicos de grado superior,5.0
+3.0,4.0,4.0,4.0,3.0,2.0,2.0,Mujer,34,Estudios primarios completos. cultural general,7.0
+1.0,5.0,7.0,6.0,1.0,1.0,1.0,Mujer,19,Universitario o técnicos de grado superior,5.0
+1.0,4.0,4.0,2.0,1.0,2.5,4.0,Hombre,22,Bachiller superior,6.0
+1.0,7.0,7.0,1.0,4.0,2.5,7.0,Mujer,58,Estudios primarios completos. cultural general,7.0
+1.0,5.0,5.0,5.0,2.0,4.0,5.0,Mujer,26,Bachiller elemental,7.0
+3.0,3.0,5.0,5.0,5.0,2.5,4.0,Hombre,35,"Menos de estudios primarios, no sabe leer",6.0
+1.0,1.0,7.0,1.0,1.0,2.5,4.0,Mujer,41,"Menos de estudios primarios, sabe leer (menos de 6 años de e",3.0
+2.0,4.0,7.0,4.0,4.0,2.5,4.0,Hombre,26,Estudios primarios completos. cultural general,4.0
+1.0,4.0,5.0,2.0,7.0,2.5,1.0,Mujer,46,Estudios primarios completos. cultural general,4.0
+2.0,5.0,4.0,3.0,1.0,2.5,1.0,Hombre,20,Estudios de grado medio,7.0
+1.0,2.0,4.0,2.0,1.0,2.5,3.0,Hombre,24,Universitario o técnicos de grado superior,6.0
+1.0,5.0,7.0,7.0,3.0,2.5,4.0,Hombre,24,Estudios de grado medio,7.0
+3.0,6.0,5.0,4.0,7.0,2.5,6.0,Mujer,54,Estudios de grado medio,5.0
+5.0,7.0,7.0,6.0,7.0,2.5,4.0,Mujer,23,Estudios de grado medio,6.0
+1.0,4.0,5.0,3.0,2.0,2.5,4.0,Hombre,20,Estudios de grado medio,4.0
+1.0,4.0,6.0,4.0,3.0,1.0,4.0,Mujer,56,Bachiller superior,6.0
+3.0,5.0,5.0,4.0,1.0,2.5,1.0,Hombre,31,"Menos de estudios primarios, no sabe leer",9.0
+5.0,6.0,6.0,6.0,5.0,4.0,4.0,Mujer,41,Estudios primarios completos. cultural general,5.0
+1.0,4.0,4.0,4.0,3.0,2.5,3.0,Hombre,29,"Menos de estudios primarios, sabe leer (menos de 6 años de e",6.0
+1.0,5.0,7.0,7.0,6.0,5.0,7.0,Hombre,60,Bachiller superior,5.0
+4.0,7.0,7.0,7.0,7.0,2.5,3.0,Mujer,34,Universitario o técnicos de grado superior,9.0
+6.0,6.0,6.0,6.0,6.0,4.0,6.0,Mujer,25,Estudios de grado medio,9.0
+1.0,4.0,5.0,3.0,4.0,2.5,4.0,Hombre,32,"Menos de estudios primarios, no sabe leer",7.0
+1.0,5.0,6.0,4.0,4.0,2.5,4.0,Hombre,24,"Menos de estudios primarios, no sabe leer",5.0
+3.0,4.0,3.0,5.0,3.0,2.5,3.0,Hombre,18,"Menos de estudios primarios, sabe leer (menos de 6 años de e",3.0
+4.0,4.0,4.0,4.0,4.0,2.5,4.0,Hombre,54,"Menos de estudios primarios, sabe leer (menos de 6 años de e",5.0
+4.0,4.0,4.0,4.0,4.0,2.5,4.0,Mujer,53,"Menos de estudios primarios, sabe leer (menos de 6 años de e",5.0
+1.0,4.0,7.0,6.0,5.0,2.5,7.0,Hombre,69,"Menos de estudios primarios, sabe leer (menos de 6 años de e",6.0
+3.0,6.0,7.0,7.0,5.0,5.0,4.0,Hombre,53,Estudios primarios completos. cultural general,6.0
+2.0,7.0,7.0,7.0,7.0,5.0,5.0,Mujer,27,"Menos de estudios primarios, sabe leer (menos de 6 años de e",8.0
+2.0,7.0,5.0,5.0,5.0,5.0,3.0,Mujer,40,Estudios primarios completos. cultural general,5.0
+2.0,5.0,7.0,5.0,5.0,2.5,4.0,Hombre,45,"Menos de estudios primarios, sabe leer (menos de 6 años de e",5.0
+2.0,5.0,7.0,5.0,3.0,2.5,4.0,Hombre,51,"Menos de estudios primarios, sabe leer (menos de 6 años de e",5.0
+3.0,6.0,7.0,6.0,6.0,2.5,4.0,Mujer,23,Estudios primarios completos. cultural general,6.0
+3.0,5.0,6.0,6.0,6.0,2.5,4.0,Mujer,54,"Menos de estudios primarios, sabe leer (menos de 6 años de e",6.0
+2.0,6.0,6.0,6.0,6.0,2.5,4.0,Mujer,49,"Menos de estudios primarios, sabe leer (menos de 6 años de e",5.0
+2.0,6.0,6.0,6.0,5.0,2.5,5.0,Hombre,33,Estudios primarios completos. cultural general,5.0
+1.0,7.0,4.0,1.0,3.0,2.5,6.0,Mujer,21,Estudios de grado medio,3.0
+3.0,7.0,6.0,3.0,3.0,2.0,3.0,Mujer,78,"Menos de estudios primarios, sabe leer (menos de 6 años de e",7.0
+3.0,6.0,6.0,4.0,3.0,2.5,3.0,Mujer,23,Universitario o técnicos de grado superior,2.0
+3.0,6.0,4.0,2.0,2.0,4.0,1.0,Hombre,45,Estudios primarios completos. cultural general,7.0
+1.0,3.0,4.0,4.0,4.0,2.5,4.0,Hombre,58,"Menos de estudios primarios, no sabe leer",5.0
+1.0,7.0,7.0,1.0,1.0,2.5,1.0,Hombre,59,Bachiller superior,7.0
+3.0,7.0,5.0,4.0,3.0,4.0,4.0,Mujer,19,Estudios primarios completos. cultural general,7.0
+1.0,6.0,7.0,6.0,6.0,1.0,5.0,Mujer,40,Estudios de grado medio,7.0
+1.0,5.0,7.0,2.0,4.0,3.0,5.0,Mujer,34,Estudios primarios completos. cultural general,6.0
+4.0,7.0,7.0,3.0,3.0,3.0,3.0,Hombre,21,Estudios de grado medio,5.0
+1.0,6.0,7.0,2.0,2.0,2.0,4.0,Mujer,57,Estudios primarios completos. cultural general,5.0
+5.0,6.0,3.0,3.0,3.0,2.5,1.0,Hombre,72,Bachiller superior,5.0
+4.0,6.0,6.0,3.0,3.0,2.5,1.0,Mujer,48,Bachiller elemental,3.0
+2.0,7.0,6.0,6.0,2.0,2.0,5.0,Hombre,68,Universitario o técnicos de grado superior,7.0
+5.0,4.0,4.0,3.0,1.0,2.5,4.0,Hombre,19,Bachiller elemental,5.0
+3.0,6.0,5.0,3.0,1.0,2.5,4.0,Mujer,32,Estudios primarios completos. cultural general,3.0
+3.0,6.0,6.0,3.0,3.0,2.5,4.0,Mujer,67,Estudios primarios completos. cultural general,7.0
+4.0,7.0,6.0,4.0,3.0,2.5,1.0,Mujer,50,"Menos de estudios primarios, sabe leer (menos de 6 años de e",4.0
+1.0,7.0,3.0,2.0,1.0,1.0,2.0,Hombre,25,Bachiller elemental,3.0
+2.0,5.0,5.0,4.0,1.0,2.5,4.0,Hombre,60,Estudios primarios completos. cultural general,4.0
+1.0,1.0,1.0,1.0,1.0,2.5,4.0,Hombre,25,Estudios de grado medio,5.0
+4.0,7.0,6.0,5.0,3.0,2.5,4.0,Hombre,39,"Menos de estudios primarios, sabe leer (menos de 6 años de e",2.0
+1.0,1.0,1.0,4.0,3.0,2.5,4.0,Mujer,47,Estudios primarios completos. cultural general,5.0
+1.0,1.0,3.0,2.0,2.0,2.5,4.0,Hombre,22,"Menos de estudios primarios, no sabe leer",6.0
+1.0,4.0,7.0,5.0,3.0,2.5,4.0,Hombre,56,"Menos de estudios primarios, no sabe leer",2.0
+1.0,6.0,5.0,2.0,3.0,2.5,4.0,Hombre,71,"Menos de estudios primarios, no sabe leer",5.0
+5.0,4.0,6.0,4.0,3.0,2.5,4.0,Mujer,35,"Menos de estudios primarios, sabe leer (menos de 6 años de e",4.0
+5.0,6.0,3.0,3.0,3.0,2.0,6.0,Mujer,47,Estudios de grado medio,3.0
+3.0,7.0,5.0,4.0,4.0,2.5,4.0,Hombre,45,"Menos de estudios primarios, sabe leer (menos de 6 años de e",4.0
+1.0,6.0,5.0,2.0,3.0,2.5,4.0,Hombre,72,Estudios de grado medio,5.0
+2.0,6.0,4.0,2.0,3.0,2.5,4.0,Hombre,65,"Menos de estudios primarios, sabe leer (menos de 6 años de e",5.0
+5.0,6.0,7.0,6.0,3.0,1.0,1.0,Mujer,46,Estudios primarios completos. cultural general,4.0
+7.0,5.0,6.0,5.0,1.0,2.5,4.0,Hombre,51,"Menos de estudios primarios, no sabe leer",5.0
+2.0,3.0,6.0,6.0,3.0,2.5,4.0,Hombre,62,"Menos de estudios primarios, no sabe leer",8.0
+6.0,5.0,6.0,3.0,3.0,2.5,4.0,Hombre,42,"Menos de estudios primarios, sabe leer (menos de 6 años de e",3.0
+6.0,3.0,3.0,7.0,3.0,2.5,4.0,Hombre,42,Estudios de grado medio,3.0
+3.0,4.0,6.0,2.0,2.0,2.5,4.0,Mujer,27,"Menos de estudios primarios, sabe leer (menos de 6 años de e",5.0
+1.0,3.0,6.0,4.0,1.0,2.5,4.0,Mujer,25,"Menos de estudios primarios, sabe leer (menos de 6 años de e",5.0
+1.0,6.0,6.0,3.0,1.0,2.5,4.0,Hombre,35,Estudios primarios completos. cultural general,5.0
+1.0,3.0,5.0,2.0,1.0,2.5,4.0,Hombre,53,Estudios de grado medio,3.0
+5.0,5.0,5.0,5.0,5.0,2.5,4.0,Mujer,63,Estudios primarios completos. cultural general,5.0
+1.0,7.0,6.0,4.0,5.0,2.5,4.0,Mujer,26,Estudios primarios completos. cultural general,6.0
+6.0,6.0,4.0,5.0,5.0,4.0,7.0,Hombre,23,"Menos de estudios primarios, sabe leer (menos de 6 años de e",4.0
+1.0,5.0,6.0,2.0,3.0,2.5,4.0,Mujer,18,"Menos de estudios primarios, sabe leer (menos de 6 años de e",4.0
+1.0,5.0,6.0,3.0,2.0,2.5,4.0,Hombre,32,Estudios de grado medio,5.0
+2.0,5.0,6.0,4.0,6.0,2.5,4.0,Hombre,28,"Menos de estudios primarios, no sabe leer",5.0
+1.0,5.0,5.0,3.0,1.0,2.5,4.0,Hombre,32,"Menos de estudios primarios, sabe leer (menos de 6 años de e",4.0
+1.0,1.0,1.0,1.0,1.0,2.5,4.0,Hombre,69,"Menos de estudios primarios, sabe leer (menos de 6 años de e",5.0
+2.0,5.0,5.0,5.0,5.0,1.0,3.0,Hombre,36,Bachiller superior,6.0
+5.0,4.0,4.0,1.0,1.0,2.5,4.0,Hombre,32,"Menos de estudios primarios, sabe leer (menos de 6 años de e",4.0
+1.0,6.0,7.0,5.0,1.0,6.0,5.0,Mujer,44,Estudios primarios completos. cultural general,3.0
+4.0,2.0,6.0,5.0,4.0,2.0,7.0,Hombre,52,Estudios primarios completos. cultural general,4.0
+5.0,5.0,6.0,5.0,6.0,3.0,4.0,Hombre,20,Estudios primarios completos. cultural general,5.0
+2.0,4.0,7.0,1.0,1.0,3.0,4.0,Mujer,38,Estudios primarios completos. cultural general,4.0
+1.0,5.0,5.0,7.0,5.0,2.5,4.0,Hombre,60,"Menos de estudios primarios, sabe leer (menos de 6 años de e",4.0
+2.0,5.0,6.0,5.0,1.0,2.5,4.0,Mujer,37,Estudios primarios completos. cultural general,4.0
+2.0,4.0,6.0,1.0,3.0,1.0,1.0,Mujer,36,"Menos de estudios primarios, no sabe leer",4.0
+1.0,7.0,7.0,7.0,3.0,2.5,4.0,Hombre,65,Estudios primarios completos. cultural general,3.0
+1.0,5.0,4.0,3.0,3.0,1.0,4.0,Hombre,57,Estudios primarios completos. cultural general,3.0
+5.0,6.0,7.0,1.0,3.0,2.5,4.0,Mujer,18,"Menos de estudios primarios, sabe leer (menos de 6 años de e",5.0
+7.0,2.0,6.0,4.0,1.0,2.5,4.0,Hombre,45,Estudios primarios completos. cultural general,3.0
+1.0,5.0,3.0,2.0,3.0,4.0,1.0,Mujer,40,Estudios de grado medio,4.0
+3.0,4.0,5.0,4.0,2.0,2.5,1.0,Mujer,40,"Menos de estudios primarios, no sabe leer",3.0
+1.0,6.0,7.0,1.0,1.0,5.0,2.0,Hombre,54,"Menos de estudios primarios, no sabe leer",3.0
+1.0,7.0,1.0,1.0,3.0,2.5,4.0,Mujer,37,Estudios primarios completos. cultural general,7.0
+2.0,3.0,5.0,3.0,3.0,1.0,1.0,Mujer,63,"Menos de estudios primarios, sabe leer (menos de 6 años de e",5.0
+1.0,3.0,6.0,3.0,1.0,2.5,4.0,Mujer,65,Estudios primarios completos. cultural general,3.0
+1.0,2.0,5.0,7.0,6.0,2.5,4.0,Hombre,53,"Menos de estudios primarios, no sabe leer",4.0
+1.0,1.0,3.0,2.0,2.0,2.5,4.0,Mujer,28,"Menos de estudios primarios, sabe leer (menos de 6 años de e",3.0
+4.0,6.0,6.0,3.0,3.0,2.0,1.0,Hombre,67,"Menos de estudios primarios, sabe leer (menos de 6 años de e",9.0
+7.0,5.0,6.0,4.0,2.0,2.5,4.0,Hombre,54,"Menos de estudios primarios, sabe leer (menos de 6 años de e",4.0
+3.0,4.0,1.0,1.0,1.0,2.0,1.0,Mujer,56,Estudios primarios completos. cultural general,4.0
+1.0,7.0,7.0,3.0,3.0,3.0,1.0,Hombre,22,Bachiller elemental,4.0
+2.0,1.0,7.0,1.0,1.0,2.0,1.0,Mujer,33,"Menos de estudios primarios, sabe leer (menos de 6 años de e",4.0
+3.0,2.0,7.0,2.0,1.0,2.0,2.0,Mujer,59,Estudios de grado medio,7.0
+2.0,6.0,5.0,3.0,1.0,2.5,4.0,Hombre,45,"Menos de estudios primarios, sabe leer (menos de 6 años de e",4.0
+1.0,5.0,6.0,4.0,7.0,2.5,4.0,Hombre,42,Estudios primarios completos. cultural general,3.0
+1.0,5.0,5.0,6.0,1.0,7.0,3.0,Mujer,18,"Menos de estudios primarios, sabe leer (menos de 6 años de e",4.0
+5.0,5.0,7.0,1.0,1.0,2.5,4.0,Hombre,53,"Menos de estudios primarios, sabe leer (menos de 6 años de e",4.0
+2.0,1.0,7.0,6.0,1.0,3.0,1.0,Mujer,47,Bachiller elemental,7.0
+1.0,3.0,6.0,4.0,7.0,2.5,4.0,Hombre,25,"Menos de estudios primarios, sabe leer (menos de 6 años de e",4.0
+1.0,7.0,7.0,1.0,3.0,2.5,4.0,Hombre,56,"Menos de estudios primarios, sabe leer (menos de 6 años de e",6.0
+5.0,7.0,7.0,1.0,1.0,5.0,4.0,Hombre,60,"Menos de estudios primarios, sabe leer (menos de 6 años de e",3.0
+4.0,5.0,5.0,5.0,5.0,2.5,5.0,Mujer,52,"Menos de estudios primarios, sabe leer (menos de 6 años de e",2.0
+1.0,4.0,6.0,6.0,5.0,5.0,5.0,Hombre,47,"Menos de estudios primarios, sabe leer (menos de 6 años de e",5.0
+5.0,2.0,6.0,6.0,3.0,5.0,4.0,Hombre,65,"Menos de estudios primarios, sabe leer (menos de 6 años de e",3.0
+5.0,5.0,5.0,5.0,5.0,2.5,4.0,Hombre,19,"Menos de estudios primarios, no sabe leer",5.0
+5.0,4.0,4.0,4.0,4.0,2.5,5.0,Mujer,53,"Menos de estudios primarios, sabe leer (menos de 6 años de e",5.0
+1.0,7.0,5.0,1.0,1.0,2.5,4.0,Hombre,29,Bachiller superior,7.0
+3.0,3.0,2.0,1.0,1.0,2.5,3.0,Mujer,23,"Menos de estudios primarios, sabe leer (menos de 6 años de e",5.0
+3.0,5.0,6.0,4.0,3.0,2.5,4.0,Hombre,53,Bachiller elemental,4.0
+7.0,6.0,6.0,2.0,3.0,5.0,4.0,Hombre,58,Estudios primarios completos. cultural general,6.0
+5.0,3.0,3.0,7.0,5.0,4.0,4.0,Hombre,40,Bachiller superior,5.0
+4.0,5.0,5.0,5.0,5.0,2.5,4.0,Mujer,58,"Menos de estudios primarios, sabe leer (menos de 6 años de e",4.0
+5.0,5.0,3.0,2.0,1.0,4.0,4.0,Mujer,45,"Menos de estudios primarios, sabe leer (menos de 6 años de e",2.0
+4.0,5.0,5.0,5.0,5.0,4.0,3.0,Hombre,60,"Menos de estudios primarios, sabe leer (menos de 6 años de e",1.0
+4.0,4.0,4.0,4.0,4.0,3.0,4.0,Mujer,33,Estudios primarios completos. cultural general,5.0
+3.0,4.0,4.0,4.0,4.0,4.0,4.0,Hombre,24,"Menos de estudios primarios, sabe leer (menos de 6 años de e",5.0
+4.0,3.0,3.0,3.0,3.0,2.5,4.0,Hombre,39,"Menos de estudios primarios, sabe leer (menos de 6 años de e",5.0
+4.0,4.0,4.0,4.0,4.0,4.0,4.0,Mujer,65,"Menos de estudios primarios, sabe leer (menos de 6 años de e",4.0
+4.0,4.0,4.0,4.0,4.0,2.5,4.0,Mujer,66,"Menos de estudios primarios, sabe leer (menos de 6 años de e",4.0
+4.0,1.0,5.0,6.0,6.0,2.5,4.0,Hombre,26,"Menos de estudios primarios, sabe leer (menos de 6 años de e",2.0
+6.0,4.0,4.0,4.0,4.0,2.5,4.0,Hombre,76,Estudios primarios completos. cultural general,5.0
+1.0,7.0,7.0,4.0,1.0,2.5,4.0,Mujer,52,Bachiller superior,3.0
+1.0,7.0,7.0,2.0,2.0,2.5,4.0,Mujer,44,"Menos de estudios primarios, no sabe leer",5.0
+1.0,7.0,7.0,2.0,2.0,2.5,4.0,Mujer,53,Bachiller superior,4.0
+3.0,5.0,7.0,3.0,3.0,2.5,4.0,Mujer,49,"Menos de estudios primarios, sabe leer (menos de 6 años de e",6.0
+4.0,6.0,5.0,3.0,3.0,2.5,4.0,Hombre,27,Universitario o técnicos de grado superior,5.0
+7.0,6.0,6.0,5.0,3.0,2.5,3.0,Mujer,20,"Menos de estudios primarios, sabe leer (menos de 6 años de e",2.0
+2.0,6.0,6.0,1.0,1.0,1.0,1.0,Hombre,71,"Menos de estudios primarios, sabe leer (menos de 6 años de e",5.0
+2.0,1.0,2.0,2.0,2.0,2.5,4.0,Mujer,34,"Menos de estudios primarios, sabe leer (menos de 6 años de e",7.0
+2.0,4.0,5.0,3.0,3.0,1.0,1.0,Hombre,45,"Menos de estudios primarios, sabe leer (menos de 6 años de e",5.0
+1.0,4.0,4.0,4.0,1.0,1.0,1.0,Hombre,78,Estudios de grado medio,3.0
+1.0,5.0,2.0,7.0,1.0,2.5,4.0,Hombre,38,Estudios primarios completos. cultural general,7.0
+1.0,4.0,4.0,4.0,1.0,2.5,4.0,Hombre,27,Bachiller superior,4.0
+4.0,7.0,1.0,1.0,1.0,2.5,4.0,Hombre,23,Universitario o técnicos de grado superior,4.0
+1.0,7.0,7.0,5.0,5.0,2.5,4.0,Hombre,32,Estudios primarios completos. cultural general,5.0
+1.0,7.0,6.0,5.0,7.0,2.5,4.0,Hombre,28,Estudios de formación profesional,5.0
+7.0,1.0,3.0,3.0,5.0,2.5,4.0,Mujer,20,"Menos de estudios primarios, sabe leer (menos de 6 años de e",4.0
+5.0,1.0,1.0,1.0,1.0,2.5,4.0,Hombre,24,"Menos de estudios primarios, sabe leer (menos de 6 años de e",9.0
+1.0,1.0,4.0,1.0,2.0,3.0,4.0,Hombre,24,Estudios primarios completos. cultural general,7.0
+2.0,4.0,4.0,4.0,3.0,3.0,5.0,Hombre,37,"Menos de estudios primarios, no sabe leer",9.0
+2.0,7.0,6.0,5.0,3.0,2.5,4.0,Mujer,57,"Menos de estudios primarios, sabe leer (menos de 6 años de e",5.0
+3.0,4.0,4.0,1.0,2.0,2.5,4.0,Hombre,51,Bachiller superior,7.0
+6.0,4.0,5.0,5.0,1.0,2.5,4.0,Hombre,45,Bachiller elemental,4.0
+1.0,6.0,6.0,4.0,4.0,2.5,4.0,Hombre,21,Estudios primarios completos. cultural general,6.0
+1.0,5.0,7.0,2.0,3.0,7.0,7.0,Mujer,23,Estudios primarios completos. cultural general,5.0
+3.0,7.0,6.0,4.0,4.0,2.5,4.0,Mujer,28,"Menos de estudios primarios, sabe leer (menos de 6 años de e",7.0
+3.0,6.0,5.0,5.0,2.0,1.0,1.0,Mujer,23,Bachiller elemental,6.0
+1.0,6.0,6.0,6.0,1.0,2.5,4.0,Hombre,44,Estudios de formación profesional,9.0
+1.0,2.0,4.0,3.0,4.0,3.0,2.0,Mujer,29,"Menos de estudios primarios, sabe leer (menos de 6 años de e",5.0
+3.0,1.0,1.0,1.0,1.0,2.5,4.0,Hombre,19,Estudios primarios completos. cultural general,6.0
+1.0,5.0,5.0,5.0,4.0,2.5,4.0,Mujer,42,"Menos de estudios primarios, sabe leer (menos de 6 años de e",6.0
+1.0,1.0,1.0,1.0,1.0,2.5,4.0,Hombre,21,Estudios primarios completos. cultural general,4.0
+1.0,5.0,5.0,4.0,2.0,2.5,4.0,Hombre,53,Estudios primarios completos. cultural general,5.0
+2.0,6.0,6.0,5.0,2.0,2.5,4.0,Hombre,77,"Menos de estudios primarios, sabe leer (menos de 6 años de e",5.0
+4.0,6.0,6.0,4.0,3.0,2.5,4.0,Mujer,48,"Menos de estudios primarios, sabe leer (menos de 6 años de e",6.0
+5.0,5.0,6.0,6.0,2.0,2.5,5.0,Hombre,21,"Menos de estudios primarios, sabe leer (menos de 6 años de e",5.0
+1.0,6.0,4.0,1.0,3.0,2.0,4.0,Mujer,29,Bachiller elemental,4.0
+1.0,4.0,7.0,1.0,1.0,2.5,1.0,Hombre,41,"Menos de estudios primarios, sabe leer (menos de 6 años de e",6.0
+5.0,1.0,3.0,7.0,4.0,2.5,4.0,Mujer,55,"Menos de estudios primarios, sabe leer (menos de 6 años de e",6.0
+2.0,6.0,6.0,5.0,3.0,2.5,4.0,Mujer,47,Estudios de grado medio,5.0
+1.0,4.0,5.0,3.0,1.0,2.5,4.0,Hombre,22,"Menos de estudios primarios, sabe leer (menos de 6 años de e",6.0
+1.0,6.0,7.0,4.0,3.0,2.5,4.0,Hombre,43,"Menos de estudios primarios, sabe leer (menos de 6 años de e",5.0
+2.0,3.0,3.0,2.0,7.0,3.0,4.0,Mujer,21,Bachiller superior,5.0
+4.0,7.0,6.0,5.0,3.0,2.0,1.0,Mujer,21,Bachiller superior,5.0
+1.0,7.0,7.0,7.0,3.0,2.5,1.0,Mujer,51,Estudios primarios completos. cultural general,1.0
+7.0,7.0,7.0,4.0,5.0,2.5,4.0,Hombre,70,Universitario o técnicos de grado superior,5.0
+3.0,7.0,7.0,5.0,3.0,2.0,4.0,Hombre,49,Estudios de formación profesional,7.0
+3.0,5.0,7.0,3.0,3.0,2.5,3.0,Hombre,63,"Menos de estudios primarios, sabe leer (menos de 6 años de e",5.0
+2.0,4.0,6.0,3.0,3.0,2.5,4.0,Hombre,60,Bachiller superior,5.0
+3.0,4.0,7.0,5.0,3.0,1.0,4.0,Hombre,54,"Menos de estudios primarios, sabe leer (menos de 6 años de e",5.0
+5.0,4.0,2.0,1.0,3.0,1.0,1.0,Hombre,24,Estudios primarios completos. cultural general,5.0
+2.0,4.0,4.0,2.0,1.0,2.5,4.0,Mujer,30,Estudios primarios completos. cultural general,8.0
+5.0,5.0,6.0,1.0,3.0,2.5,4.0,Hombre,33,Estudios de grado medio,4.0
+6.0,5.0,7.0,4.0,1.0,2.5,4.0,Hombre,76,"Menos de estudios primarios, sabe leer (menos de 6 años de e",5.0
+1.0,1.0,4.0,1.0,3.0,2.5,4.0,Hombre,60,"Menos de estudios primarios, sabe leer (menos de 6 años de e",5.0
+2.0,6.0,4.0,2.0,3.0,2.5,4.0,Mujer,21,Bachiller superior,7.0
+3.0,5.0,3.0,4.0,2.0,4.0,4.0,Mujer,42,Bachiller superior,4.0
+4.0,3.0,5.0,3.0,3.0,2.0,5.0,Hombre,39,Estudios primarios completos. cultural general,5.0
+1.0,5.0,7.0,5.0,3.0,2.5,4.0,Mujer,48,"Menos de estudios primarios, sabe leer (menos de 6 años de e",3.0
+4.0,4.0,5.0,4.0,2.0,4.0,4.0,Hombre,33,Universitario o técnicos de grado superior,4.0
+1.0,3.0,5.0,7.0,3.0,5.0,4.0,Hombre,30,Estudios primarios completos. cultural general,6.0
+3.0,7.0,4.0,2.0,4.0,2.5,4.0,Mujer,69,Estudios primarios completos. cultural general,5.0
+2.0,6.0,6.0,5.0,5.0,2.5,4.0,Mujer,47,"Menos de estudios primarios, sabe leer (menos de 6 años de e",5.0
+5.0,7.0,7.0,1.0,3.0,2.5,3.0,Hombre,28,"Menos de estudios primarios, sabe leer (menos de 6 años de e",4.0
+2.0,7.0,5.0,3.0,3.0,2.5,4.0,Mujer,41,"Menos de estudios primarios, sabe leer (menos de 6 años de e",6.0
+1.0,3.0,7.0,5.0,3.0,2.5,4.0,Hombre,64,Universitario o técnicos de grado superior,6.0
+2.0,4.0,6.0,2.0,2.0,2.5,2.0,Mujer,22,Estudios primarios completos. cultural general,6.0
+4.0,6.0,7.0,4.0,3.0,2.5,4.0,Mujer,36,"Menos de estudios primarios, sabe leer (menos de 6 años de e",4.0
+4.0,5.0,4.0,3.0,3.0,2.5,1.0,Mujer,54,"Menos de estudios primarios, sabe leer (menos de 6 años de e",2.0
+7.0,5.0,3.0,6.0,2.0,2.5,4.0,Hombre,28,Estudios primarios completos. cultural general,5.0
+1.0,4.0,3.0,3.0,3.0,2.0,4.0,Hombre,21,Estudios primarios completos. cultural general,5.0
+2.0,4.0,5.0,4.0,1.0,7.0,4.0,Mujer,52,Estudios primarios completos. cultural general,5.0
+2.0,5.0,2.0,1.0,1.0,2.5,4.0,Hombre,56,"Menos de estudios primarios, sabe leer (menos de 6 años de e",7.0
+4.0,5.0,5.0,4.0,3.0,2.5,4.0,Hombre,54,Estudios de grado medio,1.0
+1.0,6.0,7.0,3.0,3.0,2.5,4.0,Hombre,27,"Menos de estudios primarios, sabe leer (menos de 6 años de e",5.0
+1.0,6.0,6.0,3.0,3.0,2.5,4.0,Mujer,83,Estudios primarios completos. cultural general,4.0
+4.0,6.0,4.0,4.0,3.0,2.5,4.0,Mujer,28,"Menos de estudios primarios, sabe leer (menos de 6 años de e",8.0
+5.0,4.0,6.0,4.0,3.0,2.5,4.0,Hombre,52,"Menos de estudios primarios, sabe leer (menos de 6 años de e",7.0
+4.0,4.0,4.0,4.0,3.0,2.5,4.0,Mujer,75,Estudios primarios completos. cultural general,2.0
+5.0,6.0,7.0,5.0,3.0,2.5,4.0,Hombre,66,"Menos de estudios primarios, sabe leer (menos de 6 años de e",3.0
+5.0,6.0,4.0,1.0,3.0,2.5,4.0,Hombre,53,Estudios primarios completos. cultural general,5.0
+4.0,4.0,3.0,4.0,3.0,1.0,1.0,Mujer,80,Estudios de grado medio,5.0
+1.0,5.0,7.0,1.0,1.0,2.5,6.0,Mujer,33,"Menos de estudios primarios, sabe leer (menos de 6 años de e",3.0
+1.0,6.0,7.0,2.0,3.0,2.5,4.0,Hombre,45,"Menos de estudios primarios, sabe leer (menos de 6 años de e",9.0
+2.0,5.0,5.0,3.0,4.0,2.5,2.0,Hombre,50,"Menos de estudios primarios, sabe leer (menos de 6 años de e",6.0
+6.0,5.0,6.0,5.0,3.0,2.5,4.0,Hombre,29,Estudios de grado medio,5.0
+1.0,1.0,4.0,2.0,3.0,3.0,4.0,Mujer,25,"Menos de estudios primarios, sabe leer (menos de 6 años de e",4.0
+3.0,5.0,5.0,3.0,3.0,2.5,6.0,Mujer,30,Bachiller superior,8.0
+5.0,2.0,5.0,4.0,3.0,2.5,4.0,Mujer,40,"Menos de estudios primarios, no sabe leer",5.0
+7.0,5.0,7.0,7.0,3.0,2.5,4.0,Hombre,31,Bachiller superior,5.0
+3.0,5.0,4.0,3.0,3.0,5.0,7.0,Mujer,75,"Menos de estudios primarios, sabe leer (menos de 6 años de e",6.0
+6.0,5.0,1.0,1.0,6.0,1.0,4.0,Hombre,46,"Menos de estudios primarios, sabe leer (menos de 6 años de e",5.0
+1.0,5.0,7.0,7.0,6.0,2.5,1.0,Mujer,55,"Menos de estudios primarios, sabe leer (menos de 6 años de e",4.0
+1.0,1.0,6.0,6.0,3.0,2.5,4.0,Mujer,24,"Menos de estudios primarios, sabe leer (menos de 6 años de e",7.0
+1.0,2.0,5.0,7.0,1.0,2.5,1.0,Mujer,18,"Menos de estudios primarios, sabe leer (menos de 6 años de e",5.0
+1.0,5.0,6.0,3.0,3.0,1.0,1.0,Mujer,28,"Menos de estudios primarios, sabe leer (menos de 6 años de e",7.0
+4.0,5.0,4.0,2.0,1.0,2.5,4.0,Hombre,20,"Menos de estudios primarios, sabe leer (menos de 6 años de e",6.0
+5.0,4.0,2.0,1.0,1.0,2.5,4.0,Mujer,66,"Menos de estudios primarios, sabe leer (menos de 6 años de e",7.0
+3.0,5.0,6.0,3.0,1.0,2.5,4.0,Hombre,29,"Menos de estudios primarios, sabe leer (menos de 6 años de e",3.0
+3.0,6.0,6.0,3.0,3.0,2.5,4.0,Mujer,21,Estudios de formación profesional,7.0
+4.0,5.0,3.0,3.0,3.0,2.5,4.0,Hombre,50,"Menos de estudios primarios, sabe leer (menos de 6 años de e",7.0
+5.0,5.0,3.0,1.0,1.0,2.5,5.0,Hombre,37,"Menos de estudios primarios, sabe leer (menos de 6 años de e",6.0
+5.0,6.0,2.0,1.0,3.0,2.5,4.0,Mujer,23,"Menos de estudios primarios, sabe leer (menos de 6 años de e",6.0
+5.0,5.0,4.0,4.0,3.0,2.5,4.0,Mujer,36,"Menos de estudios primarios, sabe leer (menos de 6 años de e",6.0
+4.0,6.0,7.0,5.0,3.0,2.5,3.0,Mujer,62,Bachiller elemental,4.0
+6.0,5.0,6.0,4.0,2.0,2.5,5.0,Hombre,24,"Menos de estudios primarios, sabe leer (menos de 6 años de e",4.0
+3.0,5.0,5.0,4.0,3.0,2.5,4.0,Mujer,58,"Menos de estudios primarios, sabe leer (menos de 6 años de e",4.0
+3.0,4.0,6.0,5.0,4.0,2.5,4.0,Mujer,30,"Menos de estudios primarios, no sabe leer",5.0
+3.0,5.0,5.0,5.0,3.0,2.5,4.0,Hombre,53,"Menos de estudios primarios, sabe leer (menos de 6 años de e",4.0
+3.0,4.0,6.0,6.0,3.0,2.5,4.0,Hombre,42,Estudios primarios completos. cultural general,5.0
+4.0,5.0,5.0,3.0,3.0,5.0,1.0,Hombre,43,Bachiller superior,5.0
+3.0,5.0,5.0,4.0,3.0,2.5,6.0,Hombre,56,"Menos de estudios primarios, sabe leer (menos de 6 años de e",5.0
+2.0,4.0,6.0,3.0,7.0,2.5,4.0,Hombre,24,"Menos de estudios primarios, sabe leer (menos de 6 años de e",5.0
+5.0,5.0,7.0,6.0,3.0,2.0,4.0,Hombre,20,Estudios primarios completos. cultural general,1.0
+7.0,5.0,3.0,4.0,3.0,2.5,4.0,Mujer,53,"Menos de estudios primarios, sabe leer (menos de 6 años de e",5.0
+2.0,1.0,3.0,1.0,3.0,2.5,4.0,Hombre,43,Estudios primarios completos. cultural general,6.0
+1.0,6.0,7.0,5.0,3.0,1.0,4.0,Mujer,22,"Menos de estudios primarios, sabe leer (menos de 6 años de e",7.0
+4.0,1.0,1.0,1.0,3.0,1.0,4.0,Hombre,36,"Menos de estudios primarios, sabe leer (menos de 6 años de e",3.0
+1.0,1.0,1.0,1.0,4.0,2.5,1.0,Hombre,47,"Menos de estudios primarios, sabe leer (menos de 6 años de e",5.0
+1.0,3.0,6.0,7.0,3.0,2.5,4.0,Mujer,46,"Menos de estudios primarios, sabe leer (menos de 6 años de e",6.0
+7.0,1.0,1.0,6.0,3.0,2.5,4.0,Hombre,63,"Menos de estudios primarios, sabe leer (menos de 6 años de e",5.0
+7.0,7.0,7.0,6.0,3.0,2.5,4.0,Hombre,31,"Menos de estudios primarios, sabe leer (menos de 6 años de e",5.0
+3.0,6.0,6.0,3.0,3.0,2.5,4.0,Hombre,32,"Menos de estudios primarios, no sabe leer",4.0
+7.0,6.0,5.0,2.0,3.0,2.5,4.0,Mujer,52,"Menos de estudios primarios, sabe leer (menos de 6 años de e",2.0
+1.0,6.0,5.0,1.0,3.0,2.5,4.0,Hombre,57,Estudios primarios completos. cultural general,2.0
+5.0,6.0,4.0,5.0,3.0,2.5,4.0,Mujer,49,"Menos de estudios primarios, sabe leer (menos de 6 años de e",3.0
+6.0,1.0,2.0,3.0,3.0,2.5,4.0,Hombre,66,"Menos de estudios primarios, sabe leer (menos de 6 años de e",7.0
+7.0,7.0,2.0,1.0,3.0,2.5,4.0,Mujer,27,Universitario o técnicos de grado superior,5.0
+4.0,4.0,5.0,4.0,1.0,2.5,4.0,Mujer,24,"Menos de estudios primarios, no sabe leer",9.0
+3.0,6.0,6.0,3.0,3.0,2.5,4.0,Mujer,51,"Menos de estudios primarios, sabe leer (menos de 6 años de e",6.0
+7.0,7.0,7.0,7.0,3.0,2.5,4.0,Hombre,64,Estudios primarios completos. cultural general,5.0
+4.0,7.0,7.0,6.0,5.0,2.5,4.0,Hombre,27,"Menos de estudios primarios, sabe leer (menos de 6 años de e",5.0
+4.0,7.0,7.0,5.0,3.0,2.0,4.0,Mujer,31,"Menos de estudios primarios, sabe leer (menos de 6 años de e",6.0
+2.0,7.0,7.0,5.0,3.0,3.0,5.0,Mujer,48,"Menos de estudios primarios, sabe leer (menos de 6 años de e",2.0
+7.0,6.0,6.0,3.0,3.0,2.0,4.0,Mujer,21,Estudios de grado medio,3.0
+5.0,5.0,6.0,4.0,4.0,2.5,4.0,Hombre,47,Bachiller elemental,3.0
+3.0,6.0,5.0,4.0,3.0,2.5,4.0,Hombre,31,"Menos de estudios primarios, sabe leer (menos de 6 años de e",3.0
+3.0,5.0,5.0,2.0,3.0,2.5,2.0,Hombre,27,Estudios primarios completos. cultural general,4.0
+1.0,2.0,3.0,3.0,2.0,2.0,4.0,Mujer,33,"Menos de estudios primarios, sabe leer (menos de 6 años de e",5.0
+4.0,7.0,7.0,5.0,3.0,3.0,2.0,Mujer,28,Estudios primarios completos. cultural general,5.0
+2.0,7.0,7.0,2.0,2.0,2.5,4.0,Mujer,20,Estudios primarios completos. cultural general,6.0
+4.0,7.0,6.0,5.0,3.0,2.5,4.0,Hombre,46,Bachiller elemental,7.0
+3.0,6.0,5.0,4.0,3.0,2.5,4.0,Mujer,28,Estudios de grado medio,4.0
+3.0,3.0,3.0,3.0,3.0,2.5,4.0,Mujer,46,"Menos de estudios primarios, sabe leer (menos de 6 años de e",4.0
+6.0,6.0,5.0,3.0,3.0,2.5,4.0,Mujer,24,Bachiller superior,9.0
+3.0,1.0,4.0,4.0,3.0,2.5,5.0,Hombre,20,"Menos de estudios primarios, sabe leer (menos de 6 años de e",5.0
+1.0,1.0,2.0,1.0,3.0,2.5,4.0,Hombre,21,Estudios primarios completos. cultural general,7.0
+2.0,5.0,5.0,1.0,3.0,2.5,4.0,Hombre,31,"Menos de estudios primarios, sabe leer (menos de 6 años de e",5.0
+1.0,3.0,5.0,7.0,3.0,1.0,4.0,Mujer,29,Estudios primarios completos. cultural general,5.0
+1.0,5.0,7.0,2.0,3.0,2.5,4.0,Mujer,61,Estudios de grado medio,5.0
+3.0,5.0,5.0,2.0,5.0,2.5,4.0,Hombre,54,Bachiller superior,5.0
+4.0,7.0,4.0,1.0,3.0,2.5,7.0,Hombre,28,Bachiller superior,5.0
+1.0,1.0,1.0,1.0,3.0,2.5,7.0,Mujer,39,Estudios primarios completos. cultural general,5.0
+1.0,2.0,5.0,4.0,3.0,2.5,4.0,Hombre,28,Estudios primarios completos. cultural general,4.0
+1.0,3.0,3.0,7.0,3.0,2.5,4.0,Hombre,39,Bachiller superior,6.0
+4.0,2.0,6.0,5.0,3.0,2.5,2.0,Hombre,35,Bachiller superior,5.0
+4.0,5.0,6.0,5.0,1.0,2.5,4.0,Mujer,27,Estudios primarios completos. cultural general,6.0
+2.0,6.0,5.0,4.0,3.0,2.5,4.0,Hombre,31,"Menos de estudios primarios, sabe leer (menos de 6 años de e",6.0
+1.0,2.0,3.0,2.0,3.0,2.5,4.0,Mujer,26,Universitario o técnicos de grado superior,3.0
+1.0,3.0,3.0,5.0,3.0,5.0,6.0,Mujer,64,Bachiller superior,4.0
+1.0,1.0,4.0,4.0,5.0,1.0,1.0,Hombre,70,Bachiller superior,7.0
+1.0,6.0,7.0,1.0,1.0,1.0,2.0,Mujer,18,Universitario o técnicos de grado superior,6.0
+1.0,2.0,4.0,4.0,1.0,1.0,1.0,Mujer,64,Estudios de grado medio,6.0
+2.0,7.0,5.0,3.0,1.0,1.0,1.0,Hombre,52,Universitario o técnicos de grado superior,6.0
+2.0,6.0,6.0,4.0,1.0,4.0,1.0,Mujer,22,Estudios de grado medio,9.0
+1.0,4.0,7.0,4.0,1.0,6.0,4.0,Hombre,65,Universitario o técnicos de grado superior,7.0
+2.0,6.0,5.0,3.0,1.0,2.5,2.0,Hombre,24,Bachiller elemental,9.0
+2.0,6.0,4.0,2.0,4.0,2.5,4.0,Hombre,30,Estudios de grado medio,8.0
+1.0,6.0,5.0,2.0,4.0,2.5,4.0,Mujer,32,Bachiller superior,9.0
+1.0,2.0,6.0,5.0,3.0,2.5,4.0,Mujer,22,Universitario o técnicos de grado superior,8.0
+5.0,3.0,4.0,5.0,3.0,7.0,4.0,Hombre,31,Bachiller elemental,7.0
+1.0,1.0,3.0,3.0,3.0,2.5,2.0,Mujer,24,Estudios primarios completos. cultural general,7.0
+1.0,4.0,5.0,4.0,1.0,2.5,4.0,Hombre,65,"Menos de estudios primarios, sabe leer (menos de 6 años de e",8.0
+1.0,1.0,3.0,1.0,4.0,2.5,4.0,Mujer,23,Estudios primarios completos. cultural general,8.0
+4.0,6.0,5.0,2.0,3.0,2.5,4.0,Mujer,37,"Menos de estudios primarios, sabe leer (menos de 6 años de e",6.0
+1.0,2.0,6.0,3.0,3.0,2.5,4.0,Hombre,34,Bachiller superior,9.0
+1.0,1.0,1.0,1.0,3.0,2.5,4.0,Mujer,30,Estudios primarios completos. cultural general,7.0
+6.0,6.0,6.0,5.0,3.0,1.0,4.0,Mujer,53,"Menos de estudios primarios, no sabe leer",3.0
+3.0,4.0,1.0,2.0,3.0,2.5,1.0,Hombre,25,Bachiller elemental,3.0
+5.0,6.0,5.0,5.0,3.0,2.5,2.0,Mujer,61,"Menos de estudios primarios, sabe leer (menos de 6 años de e",1.0
+1.0,7.0,4.0,3.0,2.0,5.0,7.0,Hombre,24,"Menos de estudios primarios, no sabe leer",5.0
+4.0,4.0,7.0,7.0,3.0,2.5,4.0,Mujer,38,Estudios primarios completos. cultural general,5.0
+7.0,7.0,5.0,3.0,1.0,2.0,4.0,Hombre,27,Estudios primarios completos. cultural general,5.0
+1.0,3.0,4.0,1.0,3.0,2.5,4.0,Mujer,67,"Menos de estudios primarios, no sabe leer",4.0
+1.0,4.0,6.0,5.0,3.0,1.0,4.0,Hombre,30,"Menos de estudios primarios, sabe leer (menos de 6 años de e",1.0
+3.0,5.0,7.0,4.0,3.0,2.5,4.0,Mujer,27,"Menos de estudios primarios, sabe leer (menos de 6 años de e",8.0
+4.0,6.0,2.0,1.0,3.0,2.0,4.0,Mujer,54,Bachiller superior,4.0
+5.0,5.0,2.0,1.0,2.0,2.5,4.0,Mujer,41,"Menos de estudios primarios, no sabe leer",5.0
+4.0,5.0,6.0,6.0,3.0,2.0,4.0,Hombre,70,"Menos de estudios primarios, no sabe leer",6.0
+1.0,3.0,5.0,5.0,3.0,2.5,5.0,Mujer,45,Universitario o técnicos de grado superior,8.0
+7.0,6.0,5.0,4.0,5.0,2.5,5.0,Mujer,57,Estudios primarios completos. cultural general,5.0
+3.0,7.0,7.0,5.0,2.0,1.0,4.0,Hombre,59,Bachiller superior,4.0
+3.0,2.0,2.0,5.0,3.0,2.5,4.0,Mujer,73,Universitario o técnicos de grado superior,3.0
+1.0,1.0,1.0,1.0,3.0,1.0,1.0,Mujer,62,"Menos de estudios primarios, sabe leer (menos de 6 años de e",5.0
+6.0,4.0,6.0,5.0,1.0,2.0,6.0,Mujer,62,Estudios primarios completos. cultural general,5.0
+5.0,1.0,1.0,1.0,1.0,2.5,4.0,Hombre,35,Bachiller elemental,8.0
+1.0,4.0,4.0,2.0,4.0,2.5,4.0,Mujer,33,Estudios primarios completos. cultural general,4.0
+1.0,6.0,6.0,2.0,5.0,2.5,4.0,Hombre,28,Estudios primarios completos. cultural general,6.0
+1.0,1.0,3.0,6.0,3.0,1.0,1.0,Mujer,37,,9.0
+7.0,4.0,4.0,5.0,3.0,2.5,4.0,Hombre,19,,5.0
