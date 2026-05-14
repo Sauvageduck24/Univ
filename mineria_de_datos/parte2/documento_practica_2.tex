@@ -1,0 +1,739 @@
+\documentclass[12pt,a4paper]{article}
+
+% ── Paquetes ──────────────────────────────────────────────────────────────────
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{colortbl}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{parskip}
+\usepackage{mdframed}
+\usepackage{tcolorbox}
+\usepackage{float}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+% ── Colores ───────────────────────────────────────────────────────────────────
+\definecolor{primary}{HTML}{2E4A7A}
+\definecolor{secondary}{HTML}{1A3A5C}
+\definecolor{light}{HTML}{ffffff}
+\definecolor{tableheader}{HTML}{000000}
+\definecolor{tablerow}{HTML}{FFFFFF}
+\definecolor{gray}{HTML}{666666}
+\definecolor{darkgray}{HTML}{333333}
+% colores gráficas (paleta blanco / gris / negro)
+\definecolor{barA}{HTML}{1A1A1A}  % casi negro
+\definecolor{barB}{HTML}{777777}  % gris medio
+\definecolor{barC}{HTML}{BDBDBD}  % gris claro
+
+% ── Hyperlinks ────────────────────────────────────────────────────────────────
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  urlcolor=black,
+  pdftitle={Entregable 2 — Preparación de Datos Barómetro Social CIS 1162},
+  pdfauthor={Esteban Sánchez Gámez}
+}
+
+% ── Cabecera y pie de página ──────────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{gray}Minería de Datos — Entregable 2}
+\fancyhead[R]{\small\color{gray}Esteban Sánchez Gámez}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{primary}\leaders\hrule height \headrulewidth\hfill}}
+
+% ── Títulos de sección (negros) ───────────────────────────────────────────────
+\titleformat{\section}
+  {\Large\bfseries\color{black}}
+  {\thesection.}{0.6em}{}
+  [\vspace{-0.3em}{\color{black}\rule{\linewidth}{1pt}}]
+
+\titleformat{\subsection}
+  {\large\bfseries\color{black}}
+  {\thesubsection.}{0.5em}{}
+
+\titleformat{\subsubsection}
+  {\normalsize\bfseries\color{black}}
+  {\thesubsubsection.}{0.5em}{}
+
+\titlespacing{\section}{0pt}{18pt}{8pt}
+\titlespacing{\subsection}{0pt}{14pt}{5pt}
+\titlespacing{\subsubsection}{0pt}{10pt}{3pt}
+
+% ── Comandos de tabla ─────────────────────────────────────────────────────────
+\newcommand{\thead}[1]{\cellcolor{tableheader}\color{white}\textbf{#1}}
+
+% ── Caja de nota ──────────────────────────────────────────────────────────────
+\tcbuselibrary{skins,breakable}
+\newtcolorbox{notebox}{
+  colback=light, colframe=primary,
+  boxrule=0.8pt, arc=3pt,
+  left=8pt, right=8pt, top=5pt, bottom=5pt
+}
+
+% ── Estilo base pgfplots ──────────────────────────────────────────────────────
+\pgfplotsset{
+  estilobase/.style={
+    ybar,
+    bar width=14pt,
+    enlarge x limits=0.25,
+    ymajorgrids=true,
+    grid style={dotted, gray!40},
+    axis line style={color=black!50},
+    tick style={color=black!50},
+    ticklabel style={font=\small, color=black},
+    title style={font=\small\bfseries, color=black},
+    ylabel style={font=\small, color=black},
+    legend style={font=\footnotesize, draw=none, fill=none},
+  }
+}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\begin{document}
+
+% ── PORTADA ───────────────────────────────────────────────────────────────────
+\begin{titlepage}
+  \centering
+  \vspace*{2cm}
+
+  {\large\color{gray}\textsc{Minería de Datos}\\
+  Grado en Ciberseguridad e Inteligencia Artificial}
+
+  \vspace{1.5cm}
+  {\color{primary}\rule{\linewidth}{1.5pt}}
+  \vspace{0.4cm}
+
+  {\Huge\bfseries\color{black} Proyecto Individual\\[0.3em]
+  \Large Análisis de un Barómetro Social}
+
+  \vspace{0.4cm}
+  {\color{primary}\rule{\linewidth}{1.5pt}}
+
+  \vspace{1cm}
+  {\LARGE\bfseries\color{black}
+  Entregable 2\\[0.2em]
+  \large Preparación de Datos}
+
+  \vspace{2cm}
+  \begin{tabular}{rl}
+    \textbf{Estudio:}    & Barómetro Social --- CIS Estudio 1162 \\[4pt]
+    \textbf{Título:}     & Constitución y Elecciones (I) \\[4pt]
+    \textbf{Alumno:}     & Esteban Sánchez Gámez \\[4pt]
+    \textbf{Entrega:}    & Entrega 2 (25\%) \\[4pt]
+    \textbf{Código:}     & \href{https://github.com/Sauvageduck24/Univ/tree/main/mineria_de_datos}{\texttt{github.com/Sauvageduck24/Univ}} \\[4pt]
+  \end{tabular}
+
+  \vfill
+  {\small\color{gray}Minería de Datos · Curso 2025--2026}
+\end{titlepage}
+
+% ── ÍNDICE ────────────────────────────────────────────────────────────────────
+\tableofcontents
+\newpage
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section{Introducción y Estrategia de Preparación}
+
+Entregable 2, encargado de transformar el dataset bruto del Estudio CIS 1162 en un dataset limpio y coherente justificado para los análisis BI, BA y DS del Entregable 1.
+
+La limpieza del dataset la voy a realizar con Python. Aunque en clase hemos trabajado principalmente con Altair AI Studio, considero que Python es una opción más adecuada porque permite realizar el proceso de forma más rápida, reproducible y flexible. Además, para el siguiente entregable (entregable 3), centrado en modelos, facilitará continuar el trabajo de manera más eficiente manteniendo resultados consistentes. Todo el código empleado está disponible en el repositorio público: \href{https://github.com/Sauvageduck24/Univ/tree/main/mineria_de_datos}{\texttt{github.com/Sauvageduck24/Univ/mineria\_de\_datos}}.
+
+\vspace{0.5em}
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\linewidth}{>{\bfseries}p{4.5cm} X}
+\toprule
+\rowcolor{tableheader}\color{white}Dimensión & \color{white}Estado inicial \\
+\midrule
+Registros        & 1.192 entrevistas \\
+\rowcolor{tablerow}
+Variables        & 81 columnas \\
+Tipo mayoritario & Cadena de texto (\texttt{str}) — 74 variables \\
+\rowcolor{tablerow}
+Principal problema & $\sim$50\,\% de \textit{missings} estructurales (diseño condicional) \\
+Variables a eliminar & 4 administrativas sin valor analítico \\
+\rowcolor{tablerow}
+Variables a recodificar & P24 (ingresos), P801--P807 (escala texto), P15 (target binario) \\
+\bottomrule
+\end{tabularx}
+\caption{Estado inicial del dataset antes de la preparación}
+\end{table}
+
+La estrategia general son cinco fases:
+
+\begin{enumerate}[leftmargin=1.8em]
+  \item \textbf{Eliminación} de variables administrativas y sin contenido analítico.
+  \item \textbf{Tratamiento} de valores NS/NC y `No procede' como \textit{missing values}.
+  \item \textbf{Recodificación} de variables categóricas con contenido ordinal o numérico.
+  \item \textbf{Transformación} mediante discretización de variables continuas y creación de nuevas variables derivadas.
+  \item \textbf{Construcción} del dataset analítico final por análisis (BI, BA, DS).
+\end{enumerate}
+
+\newpage
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section{Limpieza de Datos}
+
+\subsection{Eliminación de variables administrativas}
+
+El dataset original incluye 4 variables que no aportan información sociológica: son identificadores internos de la encuesta o valores constantes. Se eliminan antes de cualquier análisis.
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.4}
+\begin{tabularx}{\linewidth}{p{2cm} p{3.5cm} X}
+\toprule
+\thead{Variable} & \thead{Contenido} & \thead{Justificación de eliminación} \\
+\midrule
+\texttt{ESTU}   & Número de estudio (constante: 1162)   & Valor idéntico en todas las filas. No discrimina. \\
+\rowcolor{tablerow}
+\texttt{T1}     & Tipo de encuesta (constante: 1)        & Valor idéntico en todas las filas. \\
+\texttt{T2}     & Subtipo (constante: 2)                 & Valor idéntico en todas las filas. \\
+\rowcolor{tablerow}
+\texttt{ENTREV} & Identificador del entrevistador        & Valor `Anonimizado' en las 1.192 filas. No aporta información. \\
+\bottomrule
+\end{tabularx}
+\caption{Variables administrativas eliminadas del dataset}
+\end{table}
+
+\begin{notebox}
+\textbf{Nota:} La variable \texttt{CUES} (número de cuestionario) se mantiene como identificador único de fila, aunque no se usará como \textit{feature} en ningún modelo. Su presencia permite trazabilidad entre el dataset analítico y el original.
+\end{notebox}
+
+\vspace{0.5em}
+
+Tras esta eliminación el dataset queda en \textbf{77 variables} (1.192 registros).
+
+\subsection{Verificación de duplicados}
+
+Se comprueba la unicidad de registros usando \texttt{CUES} como clave primaria. El análisis confirma que los 1.192 valores de \texttt{CUES} son únicos: \textbf{no hay filas duplicadas} en el dataset.
+
+\newpage
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section{Tratamiento de Missing Values}
+
+\subsection{Tipología de valores faltantes identificados}
+
+El dataset presenta tres tipos distintos de ausencia de dato, cada uno con tratamiento diferente:
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.5}
+\begin{tabularx}{\linewidth}{p{3.8cm} p{4cm} X}
+\toprule
+\thead{Tipo} & \thead{Valores en el dataset} & \thead{Tratamiento} \\
+\midrule
+\textit{Missing} real (\texttt{NaN}) & Celda vacía en el Excel & Ya es \texttt{NaN} en pandas; no requiere transformación adicional. \\
+\rowcolor{tablerow}
+NS/NC textual & `NS/NC', `N/S - N/C', `N.S.', `N.C.', `No sabe', `No contesta', `N/C' & Reemplazar por \texttt{NaN}. Son no-respuestas, no valores informativos. \\
+\textit{Missing} estructural & `No procede' & Reemplazar por \texttt{NaN}. Indica que la pregunta no aplica al encuestado por diseño condicional del cuestionario. Las filas afectadas \textbf{no se eliminan}. \\
+\bottomrule
+\end{tabularx}
+\caption{Tipología de valores faltantes y decisión de tratamiento}
+\end{table}
+
+\subsection{Gestión de NS/NC}
+
+Los valores NS/NC son respuestas de no-sabe o no-contesta que no pueden usarse como categoría en ningún modelo ni estadístico descriptivo sin sesgar los resultados. Su tratamiento como \texttt{NaN} permite que pandas los excluya automáticamente de los cálculos sin necesidad de eliminar filas.
+
+Las variables más afectadas por NS/NC puro (excluyendo `No procede') son:
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{lcc}
+\toprule
+\thead{Variable} & \thead{NS/NC (N)} & \thead{NS/NC (\%)} \\
+\midrule
+P806 (Valoración Constitución — escala 6) & 245 & 20,6 \\
+\rowcolor{tablerow}
+P807 (Valoración Constitución — escala 7) & 188 & 15,8 \\
+P805 (Valoración Constitución — escala 5) & 205 & 17,2 \\
+\rowcolor{tablerow}
+P24  (Ingresos familiares)                & 212 & 17,8 \\
+P25  (Partido político)                   &   8 &  0,7 \\
+\rowcolor{tablerow}
+P15  (Voto en referéndum)                 &  50 &  4,2 \\
+P22  (Religiosidad)                       &  27 &  2,3 \\
+\bottomrule
+\end{tabular}
+\caption{Principales variables con NS/NC}
+\end{table}
+
+\subsection{Gestión de ``No procede''}
+
+Como se explicó en el Entregable 1, el `No procede' es un \textbf{missing estructural por diseño}: si el encuestado no sabe definir la Constitución (P1), el cuestionario salta directamente a las preguntas sociodemográficas (P17--P28), dejando sin respuesta todas las preguntas P2--P16 y P801--P807.
+
+\begin{notebox}
+Las 600 filas con `No procede' en P2--P16 no se eliminan. Estas personas tienen datos sociodemográficos completos (edad, sexo, estudios, ocupación, ingresos, partido, región) que son válidos y necesarios para los análisis BA y DS.
+\end{notebox}
+
+\vspace{0.5em}
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{lcc}
+\toprule
+\thead{Grupo de variables} & \thead{No procede (N)} & \thead{No procede (\%)} \\
+\midrule
+P2--P16 (preguntas sobre la Constitución)    & 600 & 50,3 \\
+\rowcolor{tablerow}
+P801--P807 (escalas de valoración)           & 600 & 50,3 \\
+P23A (ocupación asalariado)                  & 374 & 31,4 \\
+\rowcolor{tablerow}
+P23B (ocupación autónomo)                    & 887 & 74,4 \\
+\bottomrule
+\end{tabular}
+\caption{Variables afectadas por missing estructural ``No procede''}
+\end{table}
+
+\newpage
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section{Recodificación de Variables}
+
+\subsection{P24 — Ingresos familiares (texto → escala ordinal 1--9)}
+
+La variable P24 contiene frases descriptivas de tramos salariales en pesetas. Para poder utilizarla en análisis cuantitativos (correlaciones, modelos) se recodifica a una escala ordinal de 1 a 9, donde 1 representa el tramo más bajo y 9 el más alto. Los NS/NC se convierten en \texttt{NaN}.
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\linewidth}{c X c c}
+\toprule
+\thead{Código} & \thead{Categoría original} & \thead{N} & \thead{\%} \\
+\midrule
+1 & Hasta 6.000 ptas mensuales            &  21 &  2,2 \\
+\rowcolor{tablerow}
+2 & De 6.000 ptas a 11.000 ptas mensuales &  60 &  6,2 \\
+3 & De 12.000 ptas a 18.000 ptas mensuales & 156 & 16,1 \\
+\rowcolor{tablerow}
+4 & De 19.000 ptas a 25.000 ptas mensuales & 204 & 21,1 \\
+5 & De 26.000 ptas a 35.000 ptas mensuales & 206 & 21,3 \\
+\rowcolor{tablerow}
+6 & De 36.000 ptas a 45.000 ptas mensuales & 155 & 16,0 \\
+7 & De 46.000 ptas a 65.000 ptas mensuales & 111 & 11,5 \\
+\rowcolor{tablerow}
+8 & De 66.000 ptas a 85.000 ptas mensuales &  30 &  3,1 \\
+9 & Más de 85.000 ptas mensuales           &  37 &  3,8 \\
+\rowcolor{tablerow}
+\texttt{NaN} & NS/NC                             & 212 &  --- \\
+\bottomrule
+\end{tabularx}
+\caption{Recodificación de P24 a escala ordinal P24\_num (N válido = 980)}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  estilobase,
+  title={Distribución de P24\_num (Ingresos recodificados 1--9)},
+  ylabel={Frecuencia},
+  symbolic x coords={1,2,3,4,5,6,7,8,9},
+  xtick=data,
+  xlabel={Tramo de ingresos},
+  xlabel style={font=\small, color=black},
+  ymin=0, ymax=240,
+  nodes near coords,
+  nodes near coords style={font=\small\bfseries, color=black},
+  width=11cm, height=5.5cm,
+  bar width=18pt,
+]
+\addplot[fill=barB, draw=black] coordinates {
+  (1, 21)(2, 60)(3,156)(4,204)(5,206)(6,155)(7,111)(8,30)(9,37)
+};
+\end{axis}
+\end{tikzpicture}
+\caption{Distribución de ingresos tras recodificación (excluidos 212 NS/NC)}
+\end{figure}
+
+La distribución sigue una forma aproximadamente normal centrada en los tramos 4--5 (ingresos medios de 19.000--35.000 ptas mensuales), coherente con el perfil socioeconómico de la España de 1978.
+
+\subsection{P801--P807 — Escalas de valoración (texto → numérico)}
+
+Las variables P801--P807 recogen valoraciones en escala 1--7 del proyecto constitucional, pero están almacenadas como cadenas de texto en el Excel original. Se convierten a tipo numérico (\texttt{float64}), asignando \texttt{NaN} a `N.S.', `N.C.' y `No procede'.
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{lcccc}
+\toprule
+\thead{Variable} & \thead{N válido} & \thead{NS/NC (N)} & \thead{Media} & \thead{Desv. Típ.} \\
+\midrule
+P801 (Democracia / orden)                    & 468 & 120 & 2,74 & 1,82 \\
+\rowcolor{tablerow}
+P802 (Familia / trabajo)                     & 488 &  99 & 4,57 & 1,85 \\
+P803 (Seguridad social / iniciativa privada) & 489 &  99 & 5,02 & 1,69 \\
+\rowcolor{tablerow}
+P804 (Laicidad / religión)                   & 473 & 115 & 3,59 & 1,79 \\
+P805 (Centralización / autonomía)            & 381 & 205 & 3,01 & 1,84 \\
+\rowcolor{tablerow}
+P806 (Cambio social / conservadurismo)       & 338 & 245 & 2,91 & 1,65 \\
+P807 (Izquierda / derecha)                   & 395 & 188 & 3,17 & 1,91 \\
+\bottomrule
+\end{tabular}
+\caption{Estadísticos de P801--P807 tras conversión a numérico}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  estilobase,
+  title={Media de las escalas P801--P807 (rango 1--7)},
+  ylabel={Media (escala 1--7)},
+  symbolic x coords={P801,P802,P803,P804,P805,P806,P807},
+  xtick=data,
+  ymin=0, ymax=7.5,
+  nodes near coords,
+  nodes near coords style={font=\small\bfseries, color=black},
+  width=11cm, height=5.5cm,
+  bar width=16pt,
+]
+\addplot[fill=barA, draw=black] coordinates {
+  (P801, 2.74)(P802, 4.57)(P803, 5.02)(P804, 3.59)
+  (P805, 3.01)(P806, 2.91)(P807, 3.17)
+};
+\end{axis}
+\end{tikzpicture}
+\caption{Medias de las escalas de valoración P801--P807}
+\end{figure}
+
+P803 (Seguridad social frente a iniciativa privada) obtiene la media más alta (5,02), lo que indica una ligera tendencia de los encuestados hacia posiciones más favorables al Estado de bienestar. P801 (Democracia frente a orden) tiene la media más baja (2,74), reflejando cierta preferencia por la democracia en el contexto de la Transición.
+
+\subsection{P22 — Religiosidad (verificación)}
+
+P22 ya está correctamente codificada como variable categórica. Se verifica que los valores `N/C' se traten como NS/NC. La distribución es coherente con el perfil religioso de la España de 1978.
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{lcc}
+\toprule
+\thead{Categoría} & \thead{N} & \thead{\%} \\
+\midrule
+Católico practicante     & 613 & 51,4 \\
+\rowcolor{tablerow}
+Católico no practicante  & 367 & 30,8 \\
+No creyente              &  90 &  7,5 \\
+\rowcolor{tablerow}
+Indiferente              &  79 &  6,6 \\
+Otras religiones         &  11 &  0,9 \\
+\rowcolor{tablerow}
+N/C → \texttt{NaN}       &  27 &  2,3 \\
+\bottomrule
+\end{tabular}
+\caption{Distribución de P22 (Religiosidad) tras tratamiento de N/C}
+\end{table}
+
+\subsection{P23A y P23B — Ocupación (tratamiento de ``No procede'')}
+
+P23A recoge la ocupación de asalariados y P23B la de autónomos: son mutuamente excluyentes por diseño del cuestionario. El valor `No procede' no indica desempleo sino que la persona pertenece a la categoría opuesta.
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\linewidth}{p{2cm} X cc}
+\toprule
+\thead{Variable} & \thead{Descripción} & \thead{N válido} & \thead{N procede → NaN} \\
+\midrule
+P23A & Ocupación del asalariado  & 792 (66,4\,\%) & 374 \\
+\rowcolor{tablerow}
+P23B & Ocupación del autónomo    & 291 (24,4\,\%) & 887 \\
+\bottomrule
+\end{tabularx}
+\caption{Tratamiento de P23A y P23B}
+\end{table}
+
+\begin{notebox}
+No se crea una variable de ocupación unificada porque las categorías de P23A (asalariados: obreros, funcionarios\ldots) y P23B (autónomos: industriales, agricultores\ldots) no son comparables directamente sin un esquema de equivalencia externo (e.g.\ CNO-94). Ambas se mantienen como variables separadas y se usan como features en los modelos con cautela.
+\end{notebox}
+
+\newpage
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section{Transformación de Variables}
+
+\subsection{Discretización: P20 → P20\_grupo (edad en intervalos)}
+
+La edad (P20) es una variable numérica continua. Para los análisis BI y BA se crea una versión discretizada \textbf{P20\_grupo} que agrupa los valores en 7 intervalos. Esto facilita la visualización de distribuciones por cohorte y la comparación de perfiles entre grupos de edad.
+
+La variable original P20 se conserva para los modelos DS, donde la edad como valor numérico tiene mayor poder predictivo que su versión discretizada.
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{lcc}
+\toprule
+\thead{P20\_grupo} & \thead{Frecuencia} & \thead{Porcentaje} \\
+\midrule
+18--25 años & 196 & 16,4 \\
+\rowcolor{tablerow}
+26--35 años & 214 & 17,9 \\
+36--45 años & 234 & 19,6 \\
+\rowcolor{tablerow}
+46--55 años & 224 & 18,8 \\
+56--65 años & 171 & 14,3 \\
+\rowcolor{tablerow}
+66--75 años & 121 & 10,2 \\
+76+ años    &  32 &  2,7 \\
+\bottomrule
+\end{tabular}
+\caption{Distribución de P20\_grupo (variable de edad discretizada)}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  estilobase,
+  title={Distribución de P20\_grupo (edad discretizada)},
+  ylabel={Frecuencia},
+  symbolic x coords={18--25, 26--35, 36--45, 46--55, 56--65, 66--75, 76+},
+  xtick=data,
+  x tick label style={font=\footnotesize, rotate=20, anchor=east},
+  ymin=0, ymax=270,
+  nodes near coords,
+  nodes near coords style={font=\small\bfseries, color=black},
+  width=11cm, height=5.5cm,
+]
+\addplot[fill=barB, draw=black] coordinates {
+  (18--25, 196)(26--35, 214)(36--45, 234)(46--55, 224)
+  (56--65, 171)(66--75, 121)(76+, 32)
+};
+\end{axis}
+\end{tikzpicture}
+\caption{Distribución de grupos de edad tras discretización de P20}
+\end{figure}
+
+\subsection{Creación de variable: P15\_bin (target para DS-1)}
+
+La pregunta DS-1 plantea predecir si un encuestado votó `Sí' en el referéndum constitucional. Para ello se crea la variable binaria \textbf{P15\_bin} a partir de P15:
+
+\begin{itemize}[leftmargin=1.8em]
+  \item \texttt{P15 = 'Sí'} $\rightarrow$ \textbf{P15\_bin = 1}
+  \item \texttt{P15 = 'No'} $\rightarrow$ \textbf{P15\_bin = 0}
+  \item \texttt{P15 = 'No procede'} o \texttt{'N/S - N/C'} $\rightarrow$ \textbf{\texttt{NaN}} (excluido del dataset de entrenamiento)
+\end{itemize}
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{lcc}
+\toprule
+\thead{P15\_bin} & \thead{N} & \thead{\% (sobre válidos)} \\
+\midrule
+1 — Votó Sí & 483 & 89,6 \\
+\rowcolor{tablerow}
+0 — Votó No  &  56 & 10,4 \\
+\midrule
+\textbf{Total válido} & \textbf{539} & \textbf{100\,\%} \\
+\rowcolor{tablerow}
+\texttt{NaN} (No procede + NS/NC) & 653 & --- \\
+\bottomrule
+\end{tabular}
+\caption{Distribución de P15\_bin — variable target para DS-1}
+\end{table}
+
+\begin{notebox}
+El dataset de entrenamiento para DS-1 presenta un fuerte desequilibrio: el 89,6\,\% de los casos válidos son `Sí'. Esto implica que en el Entregable 3 se deberá considerar el uso de técnicas de balanceo (SMOTE, ajuste de pesos en el clasificador) o métricas insensibles al desequilibrio (F1-score, AUC-ROC) para evaluar correctamente el modelo.
+\end{notebox}
+
+\newpage
+
+\subsection{Selección de variables para cada análisis}
+
+No todas las 77 variables son relevantes para los seis análisis definidos. A continuación se especifica el subconjunto de variables seleccionado para cada pregunta.
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.5}
+\begin{tabularx}{\linewidth}{p{1.2cm} p{8cm} X}
+\toprule
+\thead{Análisis} & \thead{Variables seleccionadas} & \thead{Justificación} \\
+\midrule
+BI-1 & P15, P18, P21, P20\_grupo & Voto en referéndum cruzado con sexo, estudios y grupo de edad. \\
+\rowcolor{tablerow}
+BI-2 & P1, P27, P28 & Comprensión de la Constitución por región y municipio. \\
+BA-1 & P16, P24\_num, P25 & Posición actual ante la Constitución frente a ingresos y partido. \\
+\rowcolor{tablerow}
+BA-2 & P2, P301, P302, P18, P20, P21, P22 & Seguimiento de medios de comunicación por perfil sociodemográfico. \\
+DS-1 & P15\_bin (target), P18, P20, P21, P22, P23A, P23B, P24\_num, P25, P27, P28 & Clasificación binaria del voto. Features sociodemográficas completas. \\
+\rowcolor{tablerow}
+DS-2 & P801--P807 (num), P16, P24\_num, P25, P18, P20, P21 & Clustering de actitudes constitucionales con perfil demográfico. \\
+\bottomrule
+\end{tabularx}
+\caption{Selección de variables por análisis}
+\end{table}
+
+\newpage
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section{Construcción del Dataset Analítico Final}
+
+\subsection{Dataset completo limpio (base para BI y BA)}
+
+El dataset base, aplicadas todas las transformaciones anteriores, queda con la siguiente estructura:
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\linewidth}{p{3.5cm} X}
+\toprule
+\thead{Dimensión} & \thead{Valor} \\
+\midrule
+Registros                  & 1.192 (sin eliminación de filas) \\
+\rowcolor{tablerow}
+Variables tras limpieza    & 77 ($-$4 administrativas) \\
+Variables nuevas creadas   & P24\_num, P20\_grupo, P15\_bin (3 adicionales) \\
+\rowcolor{tablerow}
+Variables P801--P807       & Convertidas de texto a \texttt{float64} \\
+\textit{Missing} tratados  & NS/NC y `No procede' → \texttt{NaN} \\
+\rowcolor{tablerow}
+Duplicados                 & 0 \\
+\bottomrule
+\end{tabularx}
+\caption{Características del dataset analítico base}
+\end{table}
+
+\subsection{Dataset analítico DS-1 (clasificación)}
+
+El subconjunto para la pregunta DS-1 requiere que la variable target (P15\_bin) sea no nula. Se aplica filtro \texttt{dropna(subset=['P15\_bin'])}.
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{lcc}
+\toprule
+\thead{Variable} & \thead{N válido} & \thead{Missing (\%)} \\
+\midrule
+P18 (Sexo)               & 539 &  0,0 \\
+\rowcolor{tablerow}
+P20 (Edad)               & 539 &  0,0 \\
+P21 (Estudios)           & 533 &  1,1 \\
+\rowcolor{tablerow}
+P22 (Religiosidad)       & 538 &  0,2 \\
+P23A (Ocup.\ asalariado) & 523 &  3,0 \\
+\rowcolor{tablerow}
+P23B (Ocup.\ autónomo)   & 532 &  1,3 \\
+P24\_num (Ingresos)      & 453 & 16,0 \\
+\rowcolor{tablerow}
+P25 (Partido)            & 535 &  0,7 \\
+P27 (Región)             & 539 &  0,0 \\
+\rowcolor{tablerow}
+P28 (Municipio)          & 539 &  0,0 \\
+\midrule
+\textbf{P15\_bin} (target) & \textbf{539} & \textbf{0,0} \\
+\bottomrule
+\end{tabular}
+\caption{Dataset DS-1 — 539 registros con target no nulo}
+\end{table}
+
+\subsection{Dataset analítico DS-2 (clustering)}
+
+Para el clustering de actitudes (DS-2) se requiere que al menos las escalas P801--P807 sean válidas, lo que restringe la muestra a los 592 encuestados que respondieron correctamente P1 (los que saben definir la Constitución). Dentro de este grupo, la disponibilidad de todas las escalas es variable según el NS/NC en cada elemento.
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{lcc}
+\toprule
+\thead{Criterio de filtro} & \thead{N resultante} & \thead{\% del total} \\
+\midrule
+Total dataset              & 1.192 & 100,0 \\
+\rowcolor{tablerow}
+P1 correcta (P2--P807 válidos) & 592 &  49,7 \\
+P801 no nula               &  468 &  39,3 \\
+\rowcolor{tablerow}
+P801--P807 todas no nulas  &  277 &  23,2 \\
+\bottomrule
+\end{tabular}
+\caption{Reducción de muestra para DS-2 según criterio de filtro}
+\end{table}
+
+Dado que exigir las 7 escalas completas reduciría la muestra a 277 registros (23,2\,\%), en el Entregable 3 se considerará usar imputación por la mediana en las escalas con alta tasa de NS/NC (P805, P806, P807) para retener la mayor parte de los 592 encuestados activos.
+
+\newpage
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section{Resumen de Decisiones de Preparación}
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.6}
+\begin{tabularx}{\linewidth}{p{2.8cm} p{3.2cm} p{2.8cm} X}
+\toprule
+\thead{Variable} & \thead{Problema} & \thead{Decisión} & \thead{Justificación} \\
+\midrule
+ESTU, T1, T2, ENTREV
+  & Variables administrativas / constantes
+  & \textbf{Eliminar} (4 variables)
+  & Cero valor analítico. Valor único o fijo en todas las filas. \\
+\rowcolor{tablerow}
+Todos los NS/NC textuales
+  & No-respuesta codificada como texto (`NS/NC', `N.S.', `N.C.'\ldots)
+  & Reemplazar por \texttt{NaN}
+  & Tratarlos como categoría distorsionaría medias y modelos. \\
+`No procede' (P2--P16, P801--P807, P23A/B)
+  & \textit{Missing} estructural por diseño condicional
+  & Reemplazar por \texttt{NaN}; \textbf{no eliminar filas}
+  & Las filas con `No procede' contienen datos sociodemográficos válidos. Eliminarlas reduciría el dataset a la mitad. \\
+\rowcolor{tablerow}
+P24 (Ingresos)
+  & Texto descriptivo de tramos salariales
+  & Recodificar a escala ordinal \textbf{P24\_num} (1--9)
+  & Necesario para tratamiento matemático. NS/NC → \texttt{NaN}. \\
+P801--P807 (Escalas)
+  & Escala 1--7 guardada como texto
+  & Convertir a \texttt{float64} (\textbf{P80x\_num})
+  & Necesario para calcular medias, desviaciones y aplicar clustering. \\
+\rowcolor{tablerow}
+P20 (Edad)
+  & Variable continua, difícil de visualizar por cohortes
+  & Crear \textbf{P20\_grupo} (7 intervalos)
+  & Facilita análisis BI por cohorte. P20 original se conserva para modelos. \\
+P15 (Voto referéndum)
+  & Variable categórica (`Sí'/`No'/`No procede'/NS/NC)
+  & Crear \textbf{P15\_bin} = 1/0; resto → \texttt{NaN}
+  & Variable target para DS-1. Necesita formato binario. \\
+\rowcolor{tablerow}
+P23A / P23B (Ocupación)
+  & Excluyentes por diseño; `No procede' no es desempleo
+  & `No procede' → \texttt{NaN}; \textbf{mantener ambas} como variables separadas
+  & Combinarlas requeriría un esquema de equivalencia externo (CNO). \\
+\bottomrule
+\end{tabularx}
+\caption{Tabla resumen de decisiones de preparación de datos}
+\end{table}
+
+\vspace{1em}
+
+\vfill
+\begin{tcolorbox}[colback=light, colframe=primary!40, boxrule=0.5pt, arc=3pt]
+  \small\color{gray}
+  \textbf{Nota:} El análisis, la interpretación de los datos y las
+  decisiones metodológicas de este documento son trabajo mío.
+  La maquetación en \LaTeX{} la ha realizado Claude (Anthropic).
+\end{tcolorbox}
+
+\end{document}
