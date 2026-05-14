@@ -1,0 +1,824 @@
+\documentclass[12pt,a4paper]{article}
+
+% ── Paquetes ──────────────────────────────────────────────────────────────────
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{colortbl}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{parskip}
+\usepackage{mdframed}
+\usepackage{tcolorbox}
+\usepackage{float}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+% ── Colores ───────────────────────────────────────────────────────────────────
+\definecolor{primary}{HTML}{2E4A7A}
+\definecolor{secondary}{HTML}{1A3A5C}
+\definecolor{light}{HTML}{ffffff}
+\definecolor{tableheader}{HTML}{000000}
+\definecolor{tablerow}{HTML}{FFFFFF}
+\definecolor{gray}{HTML}{666666}
+\definecolor{darkgray}{HTML}{333333}
+% colores gráficas (paleta blanco / gris / negro)
+\definecolor{barA}{HTML}{1A1A1A}  % casi negro
+\definecolor{barB}{HTML}{777777}  % gris medio
+\definecolor{barC}{HTML}{BDBDBD}  % gris claro
+
+% ── Hyperlinks ────────────────────────────────────────────────────────────────
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  urlcolor=black,
+  pdftitle={Entregable 1 — EDA Barómetro Social CIS 1162},
+  pdfauthor={Esteban Sánchez Gámez}
+}
+
+% ── Cabecera y pie de página ──────────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{gray}Minería de Datos — Entregable 1}
+\fancyhead[R]{\small\color{gray}Esteban Sánchez Gámez}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{primary}\leaders\hrule height \headrulewidth\hfill}}
+
+% ── Títulos de sección (negros) ───────────────────────────────────────────────
+\titleformat{\section}
+  {\Large\bfseries\color{black}}
+  {\thesection.}{0.6em}{}
+  [\vspace{-0.3em}{\color{black}\rule{\linewidth}{1pt}}]
+
+\titleformat{\subsection}
+  {\large\bfseries\color{black}}
+  {\thesubsection.}{0.5em}{}
+
+\titleformat{\subsubsection}
+  {\normalsize\bfseries\color{black}}
+  {\thesubsubsection.}{0.5em}{}
+
+\titlespacing{\section}{0pt}{18pt}{8pt}
+\titlespacing{\subsection}{0pt}{14pt}{5pt}
+\titlespacing{\subsubsection}{0pt}{10pt}{3pt}
+
+% ── Comandos de tabla ─────────────────────────────────────────────────────────
+\newcommand{\thead}[1]{\cellcolor{tableheader}\color{white}\textbf{#1}}
+
+% ── Caja de nota ──────────────────────────────────────────────────────────────
+\tcbuselibrary{skins,breakable}
+\newtcolorbox{notebox}{
+  colback=light, colframe=primary,
+  boxrule=0.8pt, arc=3pt,
+  left=8pt, right=8pt, top=5pt, bottom=5pt
+}
+
+% ── Estilo base pgfplots ──────────────────────────────────────────────────────
+\pgfplotsset{
+  estilobase/.style={
+    ybar,
+    bar width=14pt,
+    enlarge x limits=0.25,
+    ymajorgrids=true,
+    grid style={dotted, gray!40},
+    axis line style={color=black!50},
+    tick style={color=black!50},
+    ticklabel style={font=\small, color=black},
+    title style={font=\small\bfseries, color=black},
+    ylabel style={font=\small, color=black},
+    legend style={font=\footnotesize, draw=none, fill=none},
+  }
+}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\begin{document}
+
+% ── PORTADA ───────────────────────────────────────────────────────────────────
+\begin{titlepage}
+  \centering
+  \vspace*{2cm}
+
+  {\large\color{gray}\textsc{Minería de Datos}\\
+  Grado en Ciberseguridad e Inteligencia Artificial}
+
+  \vspace{1.5cm}
+  {\color{primary}\rule{\linewidth}{1.5pt}}
+  \vspace{0.4cm}
+
+  {\Huge\bfseries\color{black} Proyecto Individual\\[0.3em]
+  \Large Análisis de un Barómetro Social}
+
+  \vspace{0.4cm}
+  {\color{primary}\rule{\linewidth}{1.5pt}}
+
+  \vspace{1cm}
+  {\LARGE\bfseries\color{black}
+  Entregable 1\\[0.2em]
+  \large Ingesta, EDA y Definición del Problema}
+
+  \vspace{2cm}
+  \begin{tabular}{rl}
+    \textbf{Estudio:}    & Barómetro Social --- CIS Estudio 1162 \\[4pt]
+    \textbf{Título:}     & Constitución y Elecciones (I) \\[4pt]
+    \textbf{Alumno:}     & Esteban Sánchez Gámez \\[4pt]
+    \textbf{Entrega:}    & Entrega 1 (25\%) \\[4pt]
+  \end{tabular}
+
+  \vfill
+  {\small\color{gray}Minería de Datos · Curso 2025--2026}
+\end{titlepage}
+
+% ── ÍNDICE ────────────────────────────────────────────────────────────────────
+\tableofcontents
+\newpage
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section{Comprensión del Dataset}
+
+\subsection{Identificación del estudio}
+
+El dataset utilizado corresponde al Estudio número 1162 del Centro de Investigaciones Sociológicas (CIS), titulado \textit{Constitución y Elecciones (I)}. Este barómetro fue realizado en 1978 y recoge la opinión de la población española sobre el proyecto constitucional, en un momento histórico de especial relevancia: la transición a la democracia y la elaboración de la Constitución española.
+
+\vspace{0.5em}
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\linewidth}{>{\bfseries}p{4cm} X}
+\toprule
+\rowcolor{tableheader}\color{white}Campo & \color{white}Valor \\
+\midrule
+Número de estudio  & 1162 \\
+\rowcolor{tablerow}
+Título             & Constitución y Elecciones (I) \\
+Universo           & Población española de 18 años o más \\
+\rowcolor{tablerow}
+Año                & 1978 \\
+N.º de registros   & 1.192 entrevistas \\
+\rowcolor{tablerow}
+N.º de variables   & 81 variables \\
+\bottomrule
+\end{tabularx}
+\caption{Ficha técnica del dataset}
+\end{table}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\subsection{Tipos de variables}
+
+El dataset contiene 81 variables de los siguientes tipos:
+
+\vspace{0.5em}
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\linewidth}{p{5cm} c X}
+\toprule
+\thead{Tipo} & \thead{Cantidad} & \thead{Ejemplos} \\
+\midrule
+Cadena (\texttt{str}) — Categórica     & 74 & P1, P2, P18, P19, P21, P22, P23, P24, P25\ldots \\
+\rowcolor{tablerow}
+Entero (\texttt{int64}) — Numérica discreta  & 5  & ESTU, CUES, T1, T2, P20 (edad) \\
+Decimal (\texttt{float64}) — Numérica continua & 2  & N2, N3 \\
+\bottomrule
+\end{tabularx}
+\caption{Distribución de tipos de variables}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  estilobase,
+  title={Número de variables por tipo de dato (total: 81)},
+  ylabel={Variables},
+  symbolic x coords={Categórica (str), Entera (int64), Decimal (float64)},
+  xtick=data,
+  x tick label style={font=\footnotesize, rotate=20, anchor=east},
+  ymin=0, ymax=85,
+  nodes near coords,
+  nodes near coords style={font=\small\bfseries, color=black},
+  width=10cm, height=6cm,
+  enlarge x limits=0.3,
+]
+\addplot[fill=barA, draw=black] coordinates {
+  (Categórica (str),   74)
+  (Entera (int64),      5)
+  (Decimal (float64),   2)
+};
+\end{axis}
+\end{tikzpicture}
+\caption{Distribución de variables por tipo de dato}
+\end{figure}
+
+La mayoría de variables son categóricas codificadas como texto. Se distinguen las siguientes categorías temáticas:
+
+\begin{itemize}[leftmargin=1.5em]
+  \item \textbf{Variables administrativas:} ESTU, CUES, T1, T2, ENTREV.
+  \item \textbf{Variables de opinión sobre la Constitución (P1--P16):} opiniones, medios de información consultados, valoraciones del proyecto.
+  \item \textbf{Variables sociodemográficas (P17--P28):} sexo, edad, estado civil, estudios, ocupación, religión, ingresos, partido político y región.
+  \item \textbf{Variables de escala numérica (P801--P807):} valoraciones en escala 1--7.
+  \item \textbf{Variables de control geográfico (P27, P28, N4, N5):} región y tamaño de municipio.
+\end{itemize}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\subsection{Codificación}
+
+El libro de códigos (\texttt{codigo1162.pdf}) y el cuestionario (\texttt{cues1162.pdf}) permiten interpretar las variables:
+
+\begin{itemize}[leftmargin=1.5em]
+  \item \textbf{P20 (Edad):} el libro de códigos sugiere rangos, pero el dataset contiene valores exactos (18--88 años). Se mantiene como numérica continua.
+  \item \textbf{P24 (Ingresos):} contiene frases del tipo \textit{``De 36.000 ptas a 45.000 ptas mensuales''}. Requiere recodificación ordinal (1--9).
+  \item \textbf{P801--P807:} aparecen como cadenas de texto (`1', `2'\ldots `7', `N.S.', `N.C.', `No procede') aunque su naturaleza es numérica ordinal.
+  \item \textbf{Valores NS/NC:} los valores `No sabe', `No contesta', `N/S - N/C', `N.S.', `N.C.' deben tratarse como \textit{missing values}.
+  \item \textbf{`No procede':} indica que la pregunta no aplica al encuestado (diseño condicional del cuestionario).
+\end{itemize}
+
+\newpage
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section{Análisis Exploratorio de Datos (EDA)}
+
+\subsection{Valores faltantes}
+
+Se han analizado los valores faltantes considerando tanto las celdas vacías (\texttt{NaN}) como los valores textuales que representan no-respuesta.
+
+\begin{notebox}
+\textbf{Particularidad estructural clave:} aproximadamente el 50\,\% del dataset presenta `No procede' en las preguntas P2--P16 y P801--P807. Esto se debe al \textbf{diseño condicional del cuestionario}: si el encuestado no sabe definir la Constitución (P1), el entrevistador salta directamente a las preguntas sociodemográficas. Por tanto, este patrón \textbf{no es una pérdida de datos}, sino un \textit{missing} estructural que debe tratarse como tal, sin eliminar las filas afectadas.
+\end{notebox}
+
+\vspace{0.5em}
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\linewidth}{p{2.5cm} p{5cm} p{4cm} X}
+\toprule
+\thead{Rango} & \thead{Variables} & \thead{Causa principal} & \thead{Tratamiento} \\
+\midrule
+$>$90\,\%        & P1208, P1209, P1210, P1211, P1202, P1207 & NS/NC masivos + No procede & Evaluar eliminación \\
+\rowcolor{tablerow}
+50--90\,\%       & P2--P16, P801--P807, P1001, P13xx, P14xx & Diseño condicional de cuestionario & Missing estructural \\
+15--50\,\%       & P23A, P23B, N3, P22A, P25, P24 & NS/NC + variables excluyentes & Missing value \\
+\rowcolor{tablerow}
+1--15\,\%        & N1, P22, N4, N5, P21, P17\ldots & NS/NC puntual & Missing value \\
+0\,\%            & P18 (sexo), P20 (edad), P28 (municipio) & Variables completas & Ninguno \\
+\bottomrule
+\end{tabularx}
+\caption{Resumen de valores faltantes por rango de porcentaje}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  estilobase,
+  title={\% aproximado de missings por grupo de variables},
+  ylabel={\% de valores faltantes},
+  symbolic x coords={P18/P20/P28, P17--P22, P23A/B y P24, P2--P16, P1208--P1211},
+  xtick=data,
+  x tick label style={font=\footnotesize, rotate=18, anchor=east},
+  ymin=0, ymax=105,
+  nodes near coords,
+  nodes near coords style={font=\small\bfseries, color=black},
+  width=11cm, height=5.5cm,
+]
+\addplot[fill=barA, draw=black] coordinates {
+  (P18/P20/P28,    0)
+  (P17--P22,       8)
+  (P23A/B y P24,  35)
+  (P2--P16,       50)
+  (P1208--P1211,  92)
+};
+\end{axis}
+\end{tikzpicture}
+\caption{Porcentaje estimado de missings por grupo de variables}
+\end{figure}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\subsection{Distribuciones de variables clave}
+
+\subsubsection{Variable P20 — Edad}
+
+La edad es la única variable numérica continua con información real del encuestado. No presenta valores faltantes.
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{cccccc}
+\toprule
+\thead{N} & \thead{Media} & \thead{Desv. Típ.} & \thead{Mínimo} & \thead{Mediana} & \thead{Máximo} \\
+\midrule
+1.192 & 44,3 años & 16,5 años & 18 & 43 & 88 \\
+\bottomrule
+\end{tabular}
+\caption{Estadísticos descriptivos de P20 (Edad)}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  estilobase,
+  title={Distribución de edad por grupos (P20)},
+  ylabel={Frecuencia},
+  symbolic x coords={18--25, 26--35, 36--45, 46--55, 56--65, 66--75, 76+},
+  xtick=data,
+  ymin=0, ymax=270,
+  nodes near coords,
+  nodes near coords style={font=\small\bfseries, color=black},
+  width=11cm, height=5.5cm,
+]
+\addplot[fill=barB, draw=black] coordinates {
+  (18--25, 168)
+  (26--35, 242)
+  (36--45, 218)
+  (46--55, 206)
+  (56--65, 198)
+  (66--75, 112)
+  (76+,     48)
+};
+\end{axis}
+\end{tikzpicture}
+\caption{Distribución de edades agrupadas en intervalos (datos reales del dataset)}
+\end{figure}
+
+La distribución es aproximadamente normal con ligera asimetría positiva. La muestra cubre adecuadamente todos los grupos de edad adultos.
+
+\subsubsection{Variable P18 — Sexo}
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{lcc}
+\toprule
+\thead{Categoría} & \thead{Frecuencia} & \thead{Porcentaje} \\
+\midrule
+Hombre & 614 & 51,5\,\% \\
+\rowcolor{tablerow}
+Mujer  & 578 & 48,5\,\% \\
+\midrule
+\textbf{Total} & \textbf{1.192} & \textbf{100\,\%} \\
+\bottomrule
+\end{tabular}
+\caption{Distribución de P18 (Sexo)}
+\end{table}
+
+\subsubsection{Variable P19 — Estado Civil}
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{lcc}
+\toprule
+\thead{Estado civil} & \thead{Frecuencia} & \thead{Porcentaje} \\
+\midrule
+Casado/a                  & 819 & 68,7\,\% \\
+\rowcolor{tablerow}
+Soltero/a                 & 262 & 22,0\,\% \\
+Viudo/a                   &  98 &  8,2\,\% \\
+\rowcolor{tablerow}
+Divorciado/a o separado/a &   8 &  0,7\,\% \\
+NS/NC                     &   1 &  0,1\,\% \\
+\bottomrule
+\end{tabular}
+\caption{Distribución de P19 (Estado civil)}
+\end{table}
+
+\subsubsection{Variable P21 — Nivel de estudios}
+
+La distribución refleja el perfil educativo de la España de 1978: fuerte predominancia de bajo nivel educativo.
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\linewidth}{X c c}
+\toprule
+\thead{Nivel de estudios} & \thead{N} & \thead{\%} \\
+\midrule
+Menos de primarios, sabe leer    & 491 & 41,2 \\
+\rowcolor{tablerow}
+Estudios primarios completos     & 265 & 22,2 \\
+Menos de primarios, no sabe leer &  98 &  8,2 \\
+\rowcolor{tablerow}
+Bachiller superior               &  83 &  7,0 \\
+Universitario o grado superior   &  72 &  6,0 \\
+\rowcolor{tablerow}
+Grado medio                      &  71 &  6,0 \\
+Bachiller elemental              &  69 &  5,8 \\
+\rowcolor{tablerow}
+Formación profesional            &  25 &  2,1 \\
+\bottomrule
+\end{tabularx}
+\caption{Distribución de P21 (Nivel de estudios)}
+\end{table}
+
+\subsubsection{Variable P1 — Definición de la Constitución}
+
+Esta variable mide la comprensión del concepto `Constitución'. Aproximadamente el 50\,\% de los encuestados la define correctamente.
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\linewidth}{X c c}
+\toprule
+\thead{Definición elegida} & \thead{N} & \thead{\%} \\
+\midrule
+Conjunto de principios que regulan la vida del Estado \textit{(CORRECTA)} & 592 & 49,7 \\
+\rowcolor{tablerow}
+Ordenanzas que regulan la Administración & 258 & 21,6 \\
+Documento para arreglar problemas económicos & 250 & 21,0 \\
+\rowcolor{tablerow}
+Concierto que tipifica delitos y penas & 86 & 7,2 \\
+\bottomrule
+\end{tabularx}
+\caption{Distribución de P1 (Definición de la Constitución)}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  estilobase,
+  title={Respuestas a P1: ¿Qué es una Constitución?},
+  ylabel={Frecuencia},
+  symbolic x coords={Correcta, Ordenanzas, Prob. econ., Delitos},
+  xtick=data,
+  ymin=0, ymax=680,
+  nodes near coords,
+  nodes near coords style={font=\small\bfseries, color=black},
+  legend style={at={(0.97,0.97)}, anchor=north east, font=\small, draw=none},
+  width=11cm, height=6cm,
+  bar width=22pt,
+]
+% Respuesta correcta (negro)
+\addplot[fill=barA, draw=black] coordinates {
+  (Correcta,    592)
+  (Ordenanzas,  nan)
+  (Prob. econ., nan)
+  (Delitos,     nan)
+};
+% Respuestas erróneas (gris claro)
+\addplot[fill=barC, draw=black] coordinates {
+  (Correcta,    nan)
+  (Ordenanzas,  258)
+  (Prob. econ., 250)
+  (Delitos,      86)
+};
+\legend{Correcta, Errónea}
+\end{axis}
+\end{tikzpicture}
+\caption{Distribución de respuestas a P1 (comprensión de la Constitución)}
+\end{figure}
+
+\subsubsection{Variables P15 / P16 — Voto y posición ante la Constitución}
+
+P15 recoge si el encuestado votó en el referéndum y P16 su posición actual. Ambas presentan $\sim$50\,\% de `No procede' por el filtro de P1.
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{lcc lc}
+\toprule
+\multicolumn{3}{c}{\thead{P15 — Voto en referéndum}} & \multicolumn{2}{c}{\thead{P16 — Posición actual*}} \\
+\cmidrule(r){1-3}\cmidrule(l){4-5}
+Respuesta & N & \% & Respuesta & N \\
+\midrule
+Sí (votó a favor)  & 483 & 40,5 & A favor     & 331 \\
+\rowcolor{tablerow}
+No (votó en contra)&  56 &  4,7 & En contra   &  17 \\
+NS/NC              &  50 &  4,2 & Se abstendrá&  10 \\
+\rowcolor{tablerow}
+No procede         & 600 & 50,3 & NS/NC       & 125 \\
+\bottomrule
+\end{tabular}
+\caption{Distribución de P15 y P16. *Solo entre quienes respondieron correctamente P1.}
+\end{table}
+
+\subsubsection{Variable P25 — Partido político votado}
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{lcc}
+\toprule
+\thead{Partido} & \thead{N} & \thead{\%} \\
+\midrule
+U.C.D.\ (Unión de Centro Democrático) & 296 & 24,8 \\
+\rowcolor{tablerow}
+P.S.O.E.                              & 256 & 21,5 \\
+No votó                               & 233 & 19,5 \\
+\rowcolor{tablerow}
+No contesta                           & 207 & 17,4 \\
+P.C.E.                                &  54 &  4,5 \\
+\rowcolor{tablerow}
+Otros                                 &  49 &  4,1 \\
+A.P.\ (Alianza Popular)               &  32 &  2,7 \\
+\rowcolor{tablerow}
+P.S.P., P.N.V., D.C., otros menores   &  61 &  5,1 \\
+\bottomrule
+\end{tabular}
+\caption{Distribución de P25 (partido político votado)}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  estilobase,
+  title={Distribución del voto por partido (P25)},
+  ylabel={Frecuencia},
+  symbolic x coords={UCD, PSOE, No votó, NC, PCE, AP, Otros},
+  xtick=data,
+  ymin=0, ymax=340,
+  nodes near coords,
+  nodes near coords style={font=\small\bfseries, color=black},
+  width=11cm, height=5.5cm,
+]
+\addplot[fill=barA, draw=black] coordinates {
+  (UCD,    296)
+  (PSOE,   256)
+  (No votó,233)
+  (NC,     207)
+  (PCE,     54)
+  (AP,      32)
+  (Otros,  110)
+};
+\end{axis}
+\end{tikzpicture}
+\caption{Distribución del voto por partido político (P25)}
+\end{figure}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\subsection{Detección de outliers}
+
+Se ha aplicado el método IQR (\textit{Rango Intercuartílico}) para la única variable numérica continua con datos reales: P20 (Edad).
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{ccc}
+\toprule
+\thead{Q1 (25\,\%)} & \thead{Q3 (75\,\%)} & \thead{IQR} \\
+\midrule
+30 años & 57 años & 27 años \\
+\bottomrule
+\end{tabular}
+\caption{Cálculo IQR para P20 (Edad)}
+\end{table}
+
+\begin{itemize}[leftmargin=1.5em]
+  \item Límite inferior: $30 - 1{,}5 \times 27 = -10{,}5$ (no aplica; mínimo real = 18).
+  \item Límite superior: $57 + 1{,}5 \times 27 = 97{,}5$. El valor máximo es 88 $\rightarrow$ dentro del rango.
+  \item \textbf{Conclusión: no se detectan outliers estadísticos en la edad.}
+\end{itemize}
+
+Para las variables categóricas de escala (P801--P807, valores 1--7) no existen outliers por definición, al tratarse de escalas cerradas. Las variables de ingresos (P24) y partido (P25) tampoco presentan valores anómalos más allá del esperado NS/NC.
+
+% ─────────────────────────────────────────────────────────────────────────────
+\subsection{Relaciones entre variables}
+
+\subsubsection{P15 (Voto) vs.\ P18 (Sexo)}
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{lccc}
+\toprule
+\thead{Voto} & \thead{Hombre} & \thead{Mujer} & \thead{Total} \\
+\midrule
+Sí (votó a favor)       & 287 (46,7\,\%) & 196 (33,9\,\%) & 483 \\
+\rowcolor{tablerow}
+No (votó en contra)     &  31            &  25            &  56 \\
+NS/NC                   &  26            &  24            &  50 \\
+\rowcolor{tablerow}
+No procede              & 268            & 332            & 600 \\
+\bottomrule
+\end{tabular}
+\caption{Tabla de contingencia P15 × P18}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  ybar,
+  bar width=14pt,
+  enlarge x limits=0.35,
+  ymajorgrids=true,
+  grid style={dotted, gray!40},
+  axis line style={color=black!50},
+  tick style={color=black!50},
+  ticklabel style={font=\small, color=black},
+  title={Voto en referéndum (P15) según sexo (P18)},
+  title style={font=\small\bfseries, color=black},
+  ylabel={Frecuencia},
+  ylabel style={font=\small, color=black},
+  symbolic x coords={Votó Sí, Votó No, NS/NC},
+  xtick=data,
+  ymin=0, ymax=330,
+  nodes near coords,
+  nodes near coords style={font=\footnotesize\bfseries, color=black},
+  legend style={at={(0.97,0.97)}, anchor=north east, font=\small, draw=none},
+  width=10cm, height=6cm,
+]
+\addplot[fill=barA, draw=black]            coordinates {(Votó Sí,287)(Votó No,31)(NS/NC,26)};
+\addplot[fill=barB, draw=black]    coordinates {(Votó Sí,196)(Votó No,25)(NS/NC,24)};
+\legend{Hombre, Mujer}
+\end{axis}
+\end{tikzpicture}
+\caption{Participación en el referéndum constitucional según sexo}
+\end{figure}
+
+Los hombres mostraron mayor participación en el referéndum constitucional que las mujeres (46,7\,\% vs.\ 33,9\,\%). Esto puede relacionarse con diferencias de nivel educativo y acceso a información política en la España de 1978.
+
+\subsubsection{P16 (Posición) vs.\ P21 (Estudios)}
+
+El cruce entre posición ante la Constitución y nivel educativo muestra una tendencia clara: a mayor nivel de estudios, mayor proporción de encuestados favorables y menor proporción de NS/NC. Los universitarios expresan opinión en mayor medida que quienes no saben leer.
+
+\subsubsection{P24 (Ingresos) vs.\ P25 (Partido)}
+
+Los votantes de UCD presentan una distribución de ingresos más favorable que los del PCE. Los votantes del PSOE se concentran en tramos medios. Este patrón es coherente con la sociología electoral de la España de 1978.
+
+\newpage
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section{Problemas Identificados en el Dataset}
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.5}
+\begin{tabularx}{\linewidth}{p{2.8cm} p{3cm} p{2.8cm} X}
+\toprule
+\thead{Variable} & \thead{Problema} & \thead{Decisión} & \thead{Justificación} \\
+\midrule
+ESTU, CUES, T1, T2, ENTREV
+  & Variables administrativas sin valor analítico
+  & Eliminar del dataset
+  & No aportan información sociológica. ENTREV = `Anonimizado' en todas las filas. \\
+\rowcolor{tablerow}
+P20 (Edad)
+  & Libro de códigos indica rangos; el CSV contiene valores exactos
+  & Mantener como numérica continua (\texttt{integer})
+  & Los valores exactos permiten calcular medias y desviaciones con mayor precisión. \\
+P24 (Ingresos)
+  & Mezcla de texto descriptivo y NS/NC
+  & Recodificar a escala ordinal 1--9
+  & Necesario para tratamiento matemático. NS/NC → missing. \\
+\rowcolor{tablerow}
+P23A / P23B (Ocupación)
+  & Variables excluyentes con masivos valores `0' (no procede)
+  & Tratar `0' y `99' como missing values
+  & Eliminar filas vaciaría casi todo el dataset. La imputación falsearía la ocupación real. \\
+P1--P16, P801--P807
+  & Valores `8' y `9' codifican NS/NC mezclados con respuestas reales
+  & Cambiar 8 y 9 a missing values
+  & Un `9' (No contesta) no es una puntuación alta; distorsionaría la media de opinión. \\
+\rowcolor{tablerow}
+`No procede' en P2--P16
+  & $\sim$50\,\% del dataset tiene `No procede' por diseño condicional
+  & Tratar como missing estructural, NO eliminar filas
+  & Perder esas filas eliminaría la mitad de la muestra. Estas personas tienen datos sociodemográficos válidos. \\
+P801--P807
+  & Escala numérica guardada como texto
+  & Convertir a numérico
+  & Necesario para estadísticos descriptivos e incorporación en modelos. \\
+\bottomrule
+\end{tabularx}
+\caption{Resumen de problemas detectados y decisiones tomadas}
+\end{table}
+
+\newpage
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section{Definición de Preguntas de Análisis}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\subsection{Preguntas Business Intelligence (BI)}
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.8}
+\begin{tabularx}{\linewidth}{p{0.8cm} X p{3cm}}
+\toprule
+\thead{\#} & \thead{Pregunta} & \thead{Variables} \\
+\midrule
+BI-1
+  & \textbf{¿Cuál era la distribución del voto en el referéndum constitucional de 1978 según el sexo y el nivel de estudios del encuestado?}
+
+    \textit{\small Justificación: permite caracterizar el perfil del votante constitucional, aspecto fundamental para entender la democracia española.}
+  & P15, P18, P21 \\
+\rowcolor{tablerow}
+BI-2
+  & \textbf{¿Qué porcentaje de la población española de 1978 sabía definir correctamente qué es una Constitución, y cómo varía ese porcentaje por región geográfica?}
+
+    \textit{\small Justificación: mide el nivel de conocimiento cívico. Relevante para contextualizar la transición.}
+  & P1, P27, P28 \\
+\bottomrule
+\end{tabularx}
+\caption{Preguntas Business Intelligence}
+\end{table}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\subsection{Preguntas Business Analytics (BA)}
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.8}
+\begin{tabularx}{\linewidth}{p{0.8cm} X p{3.5cm}}
+\toprule
+\thead{\#} & \thead{Pregunta} & \thead{Variables} \\
+\midrule
+BA-1
+  & \textbf{¿Existe una relación entre el nivel de ingresos del encuestado y su posición (a favor/en contra) ante la Constitución de 1978?}
+
+    \textit{\small Justificación: permite analizar si el apoyo constitucional tenía un componente socioeconómico.}
+  & P16, P24, P25 \\
+\rowcolor{tablerow}
+BA-2
+  & \textbf{¿Qué factores sociodemográficos (edad, sexo, estudios, religiosidad) se asocian más con el nivel de información sobre la Constitución, medido por los medios que sigue el encuestado?}
+
+    \textit{\small Justificación: identifica los grupos más informados sobre el proceso constituyente. Relaciona el perfil demográfico con el consumo de medios (P2, P301, P302).}
+  & P2, P301, P302, P18, P20, P21, P22 \\
+\bottomrule
+\end{tabularx}
+\caption{Preguntas Business Analytics}
+\end{table}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\subsection{Preguntas Data Science (DS)}
+
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.8}
+\begin{tabularx}{\linewidth}{p{0.8cm} X}
+\toprule
+\thead{\#} & \thead{Pregunta} \\
+\midrule
+DS-1
+  & \textbf{¿Es posible predecir si un encuestado votó `Sí' en el referéndum constitucional a partir de su perfil sociodemográfico (edad, sexo, estudios, ocupación, ingresos, religión, región)?}
+
+    \textit{\small Justificación: clasificación binaria (Sí/No) bien definida. Variable target: P15. Features: variables sociodemográficas. El modelo se validará con división train/test y métricas de accuracy, precisión y recall.} \\
+\rowcolor{tablerow}
+DS-2
+  & \textbf{¿Es posible identificar grupos o perfiles de ciudadanos con actitudes similares hacia la Constitución mediante técnicas de clustering no supervisado?}
+
+    \textit{\small Justificación: aplicación no supervisada que no asume variable respuesta. Puede revelar segmentos ocultos (p.ej.\ `informados a favor', `desinformados indiferentes'). Se validará con el índice de silueta.} \\
+\bottomrule
+\end{tabularx}
+\caption{Preguntas Data Science}
+\end{table}
+
+\newpage
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section{Resumen Ejecutivo}
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.4}
+\begin{tabularx}{\linewidth}{p{4cm} X}
+\toprule
+\thead{Aspecto} & \thead{Resultado} \\
+\midrule
+Dataset              & Estudio CIS 1162 — Constitución y Elecciones (I), 1978 \\
+\rowcolor{tablerow}
+Registros            & 1.192 entrevistas \\
+Variables            & 81 (74 categóricas, 5 enteras, 2 decimales) \\
+\rowcolor{tablerow}
+Principal desafío    & $\sim$50\,\% de missings estructurales por diseño condicional del cuestionario \\
+Variables a eliminar & ESTU, CUES, T1, T2, ENTREV (administrativas) \\
+\rowcolor{tablerow}
+Variables a recodificar & P24 (ingresos → ordinal 1--9), P801--P807 (texto → numérico) \\
+Preguntas BI         & BI-1: perfil del votante por sexo/estudios. BI-2: conocimiento por región \\
+\rowcolor{tablerow}
+Preguntas BA         & BA-1: relación ingresos--posición. BA-2: demografía e información \\
+Preguntas DS         & DS-1: predicción del voto (clasificación). DS-2: perfiles (clustering) \\
+\bottomrule
+\end{tabularx}
+\caption{Resumen ejecutivo del Entregable 1}
+\end{table}
+
+\vspace{1em}
+
+\vfill
+\begin{tcolorbox}[colback=light, colframe=primary!40, boxrule=0.5pt, arc=3pt]
+  \small\color{gray}
+  \textbf{Nota:} El análisis, la interpretación de los datos y las
+  decisiones metodológicas de este documento son trabajo mío.
+  La maquetación en \LaTeX{} la ha realizado Claude (Anthropic).
+\end{tcolorbox}
+
+\end{document}
